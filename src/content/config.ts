@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection, z, reference } from "astro:content";
+import { glob } from "astro/loaders";
 
 const about = defineCollection({
   type: "content",
@@ -18,6 +19,36 @@ const blog = defineCollection({
   }),
 });
 
+const images = defineCollection({
+  schema: ({ image }) =>
+    z.object({
+      src: image(),
+      title: z.string(),
+      alt: z.string(),
+      description: z.string().optional(),
+      date: z.coerce.date().optional(),
+      time: z.string().optional(),
+    }),
+});
+
+const pieces = z.object({
+  schema: z.object({
+    type: z.string(),
+    title: z.string(),
+    description: z.string().optional(),
+    src: z.string(),
+    alt: z.string().optional(),
+  }),
+});
+
+const series = defineCollection({
+  loader: glob({ pattern: "*.md", base: "./src/content/series" }),
+  schema: z.object({
+    title: z.string(),
+    pieces: z.array(reference("images")),
+  }),
+});
+
 const projects = defineCollection({
   type: "content",
   schema: z.object({
@@ -28,6 +59,7 @@ const projects = defineCollection({
     draft: z.boolean().optional(),
     demoUrl: z.string().optional(),
     repoUrl: z.string().optional(),
+    // series: z.array(series).optional(),
   }),
 });
 
@@ -39,4 +71,12 @@ const legal = defineCollection({
   }),
 });
 
-export const collections = { about, blog, projects, legal };
+export const collections = {
+  about,
+  blog,
+  projects,
+  legal,
+  series,
+  pieces,
+  images,
+};
