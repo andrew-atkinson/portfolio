@@ -1,0 +1,248 @@
+---
+import "keen-slider/keen-slider.min.css";
+import { Image } from "astro:assets";
+const { images } = Astro.props;
+
+let index = 0;
+---
+
+<style>
+  [class^="number-slide"],
+  [class*=" number-slide"] {
+    background: grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    color: #fff;
+    font-weight: 500;
+    height: auto;
+    width: 100%;
+    border-width: 1px;
+    border-color: #000;
+  }
+
+  .opaque {
+    opacity: 100%;
+  }
+
+  .dimmed {
+    opacity: 30%;
+  }
+
+  .navigation-wrapper {
+    position: relative;
+  }
+
+  .dots {
+    display: flex;
+    padding: 10px 0;
+    justify-content: center;
+  }
+
+  .dot {
+    border: none;
+    width: 30px;
+    height: 20px;
+    background: #c5c5c5;
+    border-radius: 20%;
+    margin: 0 5px;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .dot:focus {
+    outline: none;
+  }
+
+  .dot--active {
+    background: #000;
+  }
+
+  .arrow {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    fill: #fff;
+    cursor: pointer;
+  }
+
+  .arrow--left {
+    left: 5px;
+    fill: "#fff";
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' %3E%3Cpath d='M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z' %3E%3C/path%3E%3C/svg%3E");
+  }
+
+  .arrow--right {
+    left: auto;
+    right: 5px;
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg'  viewBox='0 0 24 24' %3E%3Cpath d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'%3E%3C/path%3E%3C/svg%3E");
+  }
+
+  .arrow--disabled.arrow--left {
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' fill='grey' viewBox='0 0 24 24' %3E%3Cpath d='M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z' %3E%3C/path%3E%3C/svg%3E");
+  }
+
+  .arrow--disabled.arrow--right {
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' fill='grey' viewBox='0 0 24 24' %3E%3Cpath d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'%3E%3C/path%3E%3C/svg%3E");
+  }
+
+  img {
+    height: auto;
+    width: 100%;
+    /* aspect-ratio: 3 / 2; */
+  }
+</style>
+
+<script>
+  import KeenSlider from "keen-slider";
+
+  function navigation(slider: any) {
+    let wrapper: ChildNode,
+      dots: HTMLDivElement,
+      arrowLeft: HTMLDivElement,
+      arrowRight: HTMLDivElement;
+
+    function markup(remove: boolean) {
+      wrapperMarkup(remove);
+      dotMarkup(remove);
+      arrowMarkup(remove);
+    }
+
+    function removeElement(element: ChildNode) {
+      if (element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
+    }
+
+    function createDiv(className: string) {
+      var div = document.createElement("div");
+      var classNames = className.split(" ");
+      classNames.forEach((name) => div.classList.add(name));
+      return div;
+    }
+
+    function arrowMarkup(remove: boolean) {
+      if (remove) {
+        removeElement(arrowLeft);
+        removeElement(arrowRight);
+        return;
+      }
+      arrowLeft = createDiv("arrow arrow--left");
+      arrowLeft.addEventListener("click", () => slider.prev());
+      arrowRight = createDiv("arrow arrow--right");
+      arrowRight.addEventListener("click", () => slider.next());
+
+      wrapper.appendChild(arrowLeft);
+      wrapper.appendChild(arrowRight);
+    }
+
+    function wrapperMarkup(remove: boolean) {
+      if (remove) {
+        let parent = wrapper.parentNode;
+        while (wrapper.firstChild) {
+          if (parent) {
+            parent.insertBefore(wrapper.firstChild, wrapper);
+          }
+        }
+        removeElement(wrapper);
+        return;
+      }
+      wrapper = createDiv("navigation-wrapper");
+      slider.container.parentNode.appendChild(wrapper);
+      wrapper.appendChild(slider.container);
+    }
+
+    function dotMarkup(remove: boolean) {
+      if (remove) {
+        removeElement(dots);
+        return;
+      }
+      dots = createDiv("dots");
+      slider.track.details.slides.forEach((_e: any, idx: number) => {
+        var dot = createDiv("dot");
+        dot.addEventListener("click", () => slider.moveToIdx(idx));
+        dots.appendChild(dot);
+      });
+      wrapper.appendChild(dots);
+    }
+
+    function updateClasses() {
+      let slide = slider.track.details.rel;
+      slide === 0
+        ? arrowLeft.classList.add("arrow--disabled")
+        : arrowLeft.classList.remove("arrow--disabled");
+      slide === slider.track.details.slides.length - 1
+        ? arrowRight.classList.add("arrow--disabled")
+        : arrowRight.classList.remove("arrow--disabled");
+      Array.from(dots.children).forEach(function (dot, idx) {
+        idx === slide
+          ? dot.classList.add("dot--active")
+          : dot.classList.remove("dot--active");
+      });
+
+      let currentElement = document.querySelector(
+        `.number-slide${slider.track.details.rel}`
+      );
+      slider.slides.forEach((slide: HTMLDivElement) => {
+        if (slide && slide !== currentElement) {
+          slide.classList.add("dimmed");
+        }
+      });
+      if (currentElement) {
+        currentElement.classList.remove("dimmed");
+        currentElement.classList.add("opaque");
+      }
+    }
+
+    slider.on("created", () => {
+      markup(false);
+      updateClasses();
+    });
+    slider.on("optionsChanged", () => {
+      console.log(2);
+      markup(true);
+      markup(false);
+      updateClasses();
+    });
+    slider.on("slideChanged", () => {
+      updateClasses();
+    });
+    slider.on("destroyed", () => {
+      markup(true);
+    });
+  }
+
+  let slider = new KeenSlider(
+    "#my-keen-slider",
+    {
+      loop: true,
+      slides: {
+        origin: "center",
+        perView: 1.4,
+        spacing: 10,
+      },
+    },
+    [navigation]
+  );
+</script>
+
+<div>
+  <div id='my-keen-slider' class='keen-slider'>
+    {
+      images.map((image: any) => (
+        <a target='_blank' style='text-decoration: none'>
+          <div class={`keen-slider__slide number-slide${index++}`}>
+            <Image src={image.data.src} alt={image.data.title} />
+            {/* <p style="display: flex; align-items: center; justify-content: center" >
+              {image.data.title}
+            </p> */}
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</div>
