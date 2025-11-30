@@ -2,8 +2,6 @@
 import "keen-slider/keen-slider.min.css";
 import { Image } from "astro:assets";
 const { images } = Astro.props;
-
-let index = 0;
 ---
 
 <style>
@@ -184,9 +182,10 @@ let index = 0;
           : dot.classList.remove("dot--active");
       });
 
-      let currentElement = document.querySelector(
-        `.number-slide${slider.track.details.rel}`
+      let currentElement = document.getElementById(
+        `slide${slider.track.details.rel}`
       );
+
       slider.slides.forEach((slide: HTMLDivElement) => {
         if (slide && slide !== currentElement) {
           slide.classList.add("dimmed");
@@ -233,9 +232,12 @@ let index = 0;
 <div>
   <div id='my-keen-slider' class='keen-slider'>
     {
-      images.map((image: any) => (
+      images.map((image: any, index: number) => (
         <a target='_blank' style='text-decoration: none'>
-          <div class={`keen-slider__slide number-slide${index++}`}>
+          <div
+            class={`keen-slider__slide number-slide${index}`}
+            id={`slide${index}`}
+          >
             <Image src={image.data.src} alt={image.data.title} />
             {/* <p style="display: flex; align-items: center; justify-content: center" >
               {image.data.title}
