@@ -47,7 +47,7 @@ const images = await getEntries(thisSeries.data.pieces);
   .keen-slider {
     flex: 1;
     position: relative;
-    min-height: 650px;
+    height: auto;
   }
 
   .dots {
@@ -124,6 +124,7 @@ const images = await getEntries(thisSeries.data.pieces);
   img {
     height: auto;
     width: 100%;
+    object-fit: contain;
   }
 
   .carousel-container {
