@@ -1,7 +1,13 @@
 ---
 import "keen-slider/keen-slider.min.css";
+
 import { Image } from "astro:assets";
-const { images } = Astro.props;
+import { getCollection, getEntries } from "astro:content";
+
+const { seriesTitle } = Astro.props;
+const series = await getCollection("series");
+const thisSeries: any = series.find((obj) => obj.id === seriesTitle);
+const images = await getEntries(thisSeries.data.pieces);
 ---
 
 <style>
@@ -22,10 +28,12 @@ const { images } = Astro.props;
 
   .opaque {
     opacity: 100%;
+    transition: opacity 0.75s ease-in-out;
   }
 
   .dimmed {
     opacity: 30%;
+    transition: opacity 0.5s ease-in-out;
   }
 
   .navigation-wrapper {
@@ -91,7 +99,6 @@ const { images } = Astro.props;
   img {
     height: auto;
     width: 100%;
-    /* aspect-ratio: 3 / 2; */
   }
 </style>
 
