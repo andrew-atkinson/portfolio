@@ -10,7 +10,7 @@ const thisSeries: any = series.find((obj) => obj.id === seriesTitle);
 const images = await getEntries(thisSeries.data.pieces);
 ---
 
-<style>
+<style is:global>
   [class^="number-slide"],
   [class*=" number-slide"] {
     background: grey;
@@ -38,31 +38,51 @@ const images = await getEntries(thisSeries.data.pieces);
 
   .navigation-wrapper {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+
+  .keen-slider {
+    flex: 1;
+    position: relative;
+    min-height: 650px;
   }
 
   .dots {
     display: flex;
     padding: 10px 0;
     justify-content: center;
+    align-items: center;
+    height: 60px;
+    gap: 5px;
   }
 
   .dot {
     border: none;
-    width: 30px;
-    height: 20px;
-    background: #c5c5c5;
-    border-radius: 20%;
-    margin: 0 5px;
-    padding: 5px;
+    width: 10px;
+    height: 10px;
+    background: #666;
+    border-radius: 50%;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
   .dot:focus {
+    display: flex;
     outline: none;
   }
 
   .dot--active {
-    background: #000;
+    display: flex;
+    background: #fff;
+    border: 1px solid #000;
+    height: 13px;
+    width: 13px;
   }
 
   .arrow {
@@ -72,8 +92,13 @@ const images = await getEntries(thisSeries.data.pieces);
     top: 50%;
     transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
-    fill: #fff;
+    fill: #999;
     cursor: pointer;
+    display: block;
+    z-index: 10;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .arrow--left {
@@ -99,6 +124,13 @@ const images = await getEntries(thisSeries.data.pieces);
   img {
     height: auto;
     width: 100%;
+  }
+
+  .carousel-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
   }
 </style>
 
@@ -236,20 +268,19 @@ const images = await getEntries(thisSeries.data.pieces);
   );
 </script>
 
-<div>
+<div class='carousel-container'>
   <div id='my-keen-slider' class='keen-slider'>
     {
       images.map((image: any, index: number) => (
         <a target='_blank' style='text-decoration: none'>
-          <div
-            class={`keen-slider__slide number-slide${index}`}
-            id={`slide${index}`}
-          >
-            <Image src={image.data.src} alt={image.data.title} />
-            {/* <p style="display: flex; align-items: center; justify-content: center" >
-              {image.data.title}
-            </p> */}
-          </div>
+          {
+            <div
+              class={`keen-slider__slide number-slide${index}`}
+              id={`slide${index}`}
+            >
+              <Image src={image.data.src} alt={image.data.title} />
+            </div>
+          }
         </a>
       ))
     }
