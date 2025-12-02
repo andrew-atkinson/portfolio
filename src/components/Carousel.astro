@@ -23,7 +23,7 @@ const images = await getEntries(thisSeries.data.pieces);
     height: auto;
     width: 100%;
     border-width: 1px;
-    border-color: #000;
+    border-color: #0;
   }
 
   .opaque {
@@ -63,7 +63,7 @@ const images = await getEntries(thisSeries.data.pieces);
     border: none;
     width: 10px;
     height: 10px;
-    background: #666;
+    background: #000;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -267,6 +267,75 @@ const images = await getEntries(thisSeries.data.pieces);
     },
     [navigation]
   );
+
+  // Scoped keyboard navigation: active only when hovered OR focused (accessibility)
+  (function () {
+    const container = document.querySelector(".carousel-container");
+    if (!container) return;
+
+    // make container focusable for keyboard users
+    if (!container.hasAttribute("tabindex")) {
+      container.setAttribute("tabindex", "0");
+    }
+    if (!container.hasAttribute("aria-roledescription")) {
+      container.setAttribute("aria-roledescription", "carousel");
+    }
+
+    let hoverActive = false;
+    let focusActive = false;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "ArrowLeft") {
+        slider.prev();
+        event.preventDefault();
+      } else if (event.key === "ArrowRight") {
+        slider.next();
+        event.preventDefault();
+      }
+    }
+
+    function updateKeyListener() {
+      if (hoverActive || focusActive) {
+        document.addEventListener("keydown", onKeyDown);
+      } else {
+        document.removeEventListener("keydown", onKeyDown);
+      }
+    }
+
+    function onMouseEnter() {
+      hoverActive = true;
+      updateKeyListener();
+    }
+    function onMouseLeave() {
+      hoverActive = false;
+      updateKeyListener();
+    }
+    function onFocus() {
+      focusActive = true;
+      updateKeyListener();
+    }
+    function onBlur() {
+      focusActive = false;
+      updateKeyListener();
+    }
+
+    container.addEventListener("mouseenter", onMouseEnter);
+    container.addEventListener("mouseleave", onMouseLeave);
+    // use capture so focus/blur fired when any child receives focus
+    container.addEventListener("focus", onFocus, true);
+    container.addEventListener("blur", onBlur, true);
+
+    // Ensure we remove listeners when the slider is destroyed
+    if (slider && slider.on) {
+      slider.on("destroyed", () => {
+        document.removeEventListener("keydown", onKeyDown);
+        container.removeEventListener("mouseenter", onMouseEnter);
+        container.removeEventListener("mouseleave", onMouseLeave);
+        container.removeEventListener("focus", onFocus, true);
+        container.removeEventListener("blur", onBlur, true);
+      });
+    }
+  })();
 </script>
 
 <div class='carousel-container'>
