@@ -13,4 +13,5 @@ pieces:
   - storhofdi-10
   - storhofdi-11
   - storhofdi-12
+project: "Ultima Thule"
 ---
