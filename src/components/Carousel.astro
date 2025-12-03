@@ -11,19 +11,28 @@ const images = await getEntries(thisSeries.data.pieces);
 ---
 
 <style is:global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  .slider-image {
+    border-width: 1px;
+    border-color: #000;
+  }
+
   [class^="number-slide"],
   [class*=" number-slide"] {
-    background: grey;
+    /* background: grey; */
+    /* color: #000; */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 50px;
-    color: #fff;
     font-weight: 500;
     height: auto;
     width: 100%;
-    border-width: 1px;
-    border-color: #0;
+
+    @apply prose dark:prose-invert max-w-full pb-12;
   }
 
   .opaque {
@@ -342,16 +351,26 @@ const images = await getEntries(thisSeries.data.pieces);
   <div id='my-keen-slider' class='keen-slider'>
     {
       images.map((image: any, index: number) => (
-        <a target='_blank' style='text-decoration: none'>
-          {
-            <div
-              class={`keen-slider__slide number-slide${index}`}
-              id={`slide${index}`}
-            >
-              <Image src={image.data.src} alt={image.data.title} />
-            </div>
-          }
-        </a>
+        <div>
+          <a target='_blank' style='text-decoration: none'>
+            {
+              <div
+                style='display:flex; flex-direction: column; align-items: center;'
+                id={`slide${index}`}
+                class={`keen-slider__slide number-slide${index}`}
+              >
+                <Image
+                  src={image.data.src}
+                  alt={image.data.title}
+                  class={`slider-image`}
+                />
+                <div class='text-xs font-thin text-center text-zinc-700'>
+                  <p>{image.data.description}</p>
+                </div>
+              </div>
+            }
+          </a>
+        </div>
       ))
     }
   </div>
