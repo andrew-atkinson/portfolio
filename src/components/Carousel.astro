@@ -22,17 +22,16 @@ const images = await getEntries(thisSeries.data.pieces);
 
   [class^="number-slide"],
   [class*=" number-slide"] {
-    /* background: grey; */
-    /* color: #000; */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     font-size: 50px;
     font-weight: 500;
     height: auto;
     width: 100%;
 
     @apply prose dark:prose-invert max-w-full pb-12;
+    padding-bottom: 0px;
   }
 
   .opaque {
@@ -42,6 +41,11 @@ const images = await getEntries(thisSeries.data.pieces);
 
   .dimmed {
     opacity: 30%;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .transparent {
+    opacity: 0%;
     transition: opacity 0.5s ease-in-out;
   }
 
@@ -235,15 +239,19 @@ const images = await getEntries(thisSeries.data.pieces);
         `slide${slider.track.details.rel}`
       );
 
-      slider.slides.forEach((slide: HTMLDivElement) => {
+      slider.slides.forEach((slide: HTMLDivElement, idx: number) => {
         if (slide && slide !== currentElement) {
           slide.classList.add("dimmed");
+          slide.classList.remove("opaque");
+          slide.children[1].classList.add("transparent");
+          slide.children[1].classList.remove("opaque");
+        } else {
+          slide.classList.remove("dimmed");
+          slide.classList.add("opaque");
+          slide.children[1].classList.remove("transparent");
+          slide.children[1].classList.add("opaque");
         }
       });
-      if (currentElement) {
-        currentElement.classList.remove("dimmed");
-        currentElement.classList.add("opaque");
-      }
     }
 
     slider.on("created", () => {
@@ -364,7 +372,10 @@ const images = await getEntries(thisSeries.data.pieces);
                   alt={image.data.title}
                   class={`slider-image`}
                 />
-                <div class='text-xs font-thin text-center text-zinc-700'>
+                <div
+                  id={`description${index}`}
+                  class='text-xs font-thin text-center text-zinc-700'
+                >
                   <p>{image.data.description}</p>
                 </div>
               </div>
