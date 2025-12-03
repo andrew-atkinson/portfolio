@@ -43,7 +43,7 @@ const images = await getEntries(thisSeries.data.pieces);
 
   .transparent {
     opacity: 0%;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
   }
 
   .navigation-wrapper {
@@ -51,7 +51,6 @@ const images = await getEntries(thisSeries.data.pieces);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    object-fit: contain;
   }
 
   .keen-slider {
@@ -136,7 +135,7 @@ const images = await getEntries(thisSeries.data.pieces);
   .carousel-container {
     display: flex;
     flex-direction: column;
-    max-height: 80vh;
+    height: auto;
   }
 </style>
 
