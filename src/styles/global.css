@@ -27,9 +27,8 @@
 html {
   overflow-y: scroll;
   color-scheme: light;
-  background-color: white;
+  background-color: "white";
   font-family: "Atkinson", sans-serif;
-
 }
 
 html.dark {
@@ -40,7 +39,7 @@ html.dark {
 html,
 body {
   @apply h-full w-full antialiased;
-  @apply bg-white dark:bg-black;
+  @apply bg-backlight dark:bg-black;
   @apply text-black/75 dark:text-white/75;
 }
 
@@ -49,7 +48,7 @@ body {
 }
 
 main {
-  @apply flex flex-col flex-1 bg-white dark:bg-black;
+  @apply flex flex-col flex-1 bg-backlight dark:bg-black;
 }
 
 header {
@@ -62,9 +61,9 @@ header:not(.scrolled) {
 }
 
 header.scrolled {
-  @apply bg-white/75 dark:bg-black/50;
+  @apply bg-backlight/50 dark:bg-black/50;
   @apply border-black/10 dark:border-white/25;
-  @apply backdrop-blur-sm saturate-200;
+  @apply backdrop-blur-sm;
 }
 
 article {
@@ -123,14 +122,12 @@ article img {
   /* defined in tailwind.config */
 }
 
-
 /**
  * Meteors
  */
 
 #meteors .shower {
   @apply absolute inset-0 top-0;
-  ;
   @apply left-1/2 -translate-x-1/2;
   @apply w-screen aspect-square;
 }
