@@ -4,9 +4,9 @@ import "keen-slider/keen-slider.min.css";
 import { Image } from "astro:assets";
 import { getCollection, getEntries } from "astro:content";
 
-const { seriesTitle } = Astro.props;
+const { id } = Astro.props;
 const series = await getCollection("series");
-const thisSeries: any = series.find((obj) => obj.id === seriesTitle);
+const thisSeries: any = series.find((obj) => obj.id === id);
 const images = await getEntries(thisSeries.data.pieces);
 ---
 
@@ -354,9 +354,9 @@ const images = await getEntries(thisSeries.data.pieces);
                 <Image src={image.data.src} alt={image.data.title} />
                 <div
                   id={`description${index}`}
-                  class='text-xs font-thin text-center'
+                  class='text-base font-thin text-center'
                 >
-                  <p>{image.data.description}</p>
+                  <p>{image.data.title}</p>
                 </div>
               </div>
             }
