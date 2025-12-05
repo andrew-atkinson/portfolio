@@ -44,9 +44,11 @@ const pieces = z.object({
 const series = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/content/series" }),
   schema: z.object({
+    layout: z.string().optional(),
     title: z.string(),
     pieces: z.array(reference("images")),
     project: z.string().optional(),
+    id: z.string().optional(),
   }),
 });
 

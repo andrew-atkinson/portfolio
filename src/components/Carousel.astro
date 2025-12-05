@@ -4,10 +4,7 @@ import "keen-slider/keen-slider.min.css";
 import { Image } from "astro:assets";
 import { getCollection, getEntries } from "astro:content";
 
-const { id } = Astro.props;
-const series = await getCollection("series");
-const thisSeries: any = series.find((obj) => obj.id === id);
-const images = await getEntries(thisSeries.data.pieces);
+const { images } = Astro.props;
 ---
 
 <style is:global>
