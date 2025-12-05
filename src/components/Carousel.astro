@@ -217,7 +217,7 @@ const { images } = Astro.props;
         `slide${slider.track.details.rel}`
       );
 
-      slider.slides.forEach((slide: HTMLDivElement, idx: number) => {
+      slider.slides.forEach((slide: HTMLDivElement) => {
         if (slide && slide !== currentElement) {
           slide.classList.add("dimmed");
           slide.classList.remove("opaque");
