@@ -9,7 +9,7 @@ import Carousel from "@components/Carousel.astro";
 import { getEntries, getEntry } from "astro:content";
 
 const { frontmatter } = Astro.props;
-const series = await getEntry("series", frontmatter.id);
+const series: any = await getEntry("series", frontmatter.id);
 const { Content } = await series.render();
 const pieces = await getEntries(series.data.pieces);
 ---
