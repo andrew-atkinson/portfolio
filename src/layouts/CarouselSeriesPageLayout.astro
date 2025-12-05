@@ -32,15 +32,15 @@ const pieces = await getEntries(series.data.pieces);
             <Carousel images={pieces} />
           </div>
         </div>
-        <section class='animate'>
-          <div class='relative bg-backlight dark:bg-black'>
-            <div class='mx-auto max-w-screen-lg p-5 space-y-24 pb-16 text-base'>
-              <Content />
-            </div>
-          </div>
-        </section>
       </section>
-      <Footer />
+      <section class='animate'>
+        <div class='relative bg-backlight dark:bg-black'>
+          <div class='mx-auto max-w-screen-lg p-5 space-y-24 pb-16 text-base'>
+            <Content />
+          </div>
+        </div>
+      </section>
     </main>
+    <Footer />
   </body>
 </html>
