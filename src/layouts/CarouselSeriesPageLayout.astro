@@ -6,12 +6,12 @@ import Footer from "@components/Footer.astro";
 import Drawer from "@components/Drawer.astro";
 import { SITE } from "@consts";
 import Carousel from "@components/Carousel.astro";
-import { getCollection, getEntries } from "astro:content";
+import { getEntries, getEntry } from "astro:content";
 
 const { frontmatter } = Astro.props;
-const series = await getCollection("series");
-const thisSeries: any = series.find((obj) => obj.id === frontmatter.id);
-const pieces = await getEntries(thisSeries.data.pieces);
+const series = await getEntry("series", frontmatter.id);
+const { Content } = await series.render();
+const pieces = await getEntries(series.data.pieces);
 ---
 
 <!doctype html>
@@ -35,12 +35,12 @@ const pieces = await getEntries(thisSeries.data.pieces);
         <section class='animate'>
           <div class='relative bg-backlight dark:bg-black'>
             <div class='mx-auto max-w-screen-lg p-5 space-y-24 pb-16 text-base'>
-              <slot />
+              <Content />
             </div>
           </div>
         </section>
       </section>
+      <Footer />
     </main>
-    <Footer />
   </body>
 </html>
