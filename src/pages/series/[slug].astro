@@ -1,0 +1,25 @@
+---
+import CarouselSeriesPageLayout from "@layouts/CarouselSeriesPageLayout.astro";
+
+export async function getStaticPaths() {
+  const allSeries = Object.values(
+    import.meta.glob("../../content/series/*.md", { eager: true })
+  );
+
+  return allSeries.map((series: any) => {
+    return {
+      params: {
+        slug: series.frontmatter.id,
+      },
+      props: {
+        frontmatter: series.frontmatter,
+      },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const { frontmatter } = Astro.props;
+---
+
+<CarouselSeriesPageLayout frontmatter={frontmatter} />
