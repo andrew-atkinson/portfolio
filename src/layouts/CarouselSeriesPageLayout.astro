@@ -28,14 +28,19 @@ const pieces = await getEntries(series.data.pieces);
     <main>
       <section class='animate'>
         <div class='relative bg-backlight dark:bg-black'>
-          <div class='mx-auto max-w-screen-lg p-5 space-y-24 pb-16'>
+          <div
+            class='p-5 mx-auto max-w-screen-lg opacity-75 text-lg tracking-wider text-center mt-14'
+          >
+            {frontmatter.title}
+          </div>
+          <div class='mx-auto max-w-screen-lg'>
             <Carousel images={pieces} />
           </div>
         </div>
       </section>
       <section class='animate'>
         <div class='relative bg-backlight dark:bg-black'>
-          <div class='mx-auto max-w-screen-lg p-5 space-y-24 pb-16 text-base'>
+          <div class='mx-auto max-w-screen-lg p-5 pb-16 text-base'>
             <Content />
           </div>
         </div>
