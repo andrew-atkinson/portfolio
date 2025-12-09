@@ -22,4 +22,4 @@ const { slug } = Astro.params;
 const { frontmatter } = Astro.props;
 ---
 
-<CarouselSeriesPageLayout frontmatter={frontmatter} />
+<CarouselSeriesPageLayout id={slug} frontmatter={frontmatter} />
