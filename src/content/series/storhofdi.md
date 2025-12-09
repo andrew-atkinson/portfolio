@@ -1,5 +1,4 @@
 ---
-layout: "../../layouts/CarouselSeriesPageLayout.astro"
 title: "24 hours around Stórhöfði"
 pieces:
   - storhofdi-1
