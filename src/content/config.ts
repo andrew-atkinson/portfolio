@@ -49,6 +49,7 @@ const series = defineCollection({
     pieces: z.array(reference("images")),
     project: z.string().optional(),
     id: z.string().optional(),
+    initialIndex: z.number().optional(),
   }),
 });
 
