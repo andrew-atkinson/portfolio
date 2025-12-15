@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         backlight: "#eff0e1",
+        backdark: "#141414",
       },
       fontFamily: {
         sans: ["Atkinson", ...defaultTheme.fontFamily.sans],
