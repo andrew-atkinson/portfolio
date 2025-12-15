@@ -33,13 +33,13 @@ html {
 
 html.dark {
   color-scheme: dark;
-  background-color: black;
+  background-color: backdark;
 }
 
 html,
 body {
   @apply h-full w-full antialiased;
-  @apply bg-backlight dark:bg-black;
+  @apply bg-backlight dark:bg-backdark;
   @apply text-black/75 dark:text-white/75;
 }
 
@@ -48,7 +48,7 @@ body {
 }
 
 main {
-  @apply flex flex-col flex-1 bg-backlight dark:bg-black;
+  @apply flex flex-col flex-1 bg-backlight dark:bg-backdark;
 }
 
 header {
@@ -61,7 +61,7 @@ header:not(.scrolled) {
 }
 
 header.scrolled {
-  @apply bg-backlight/50 dark:bg-black/50;
+  @apply bg-backlight/50 dark:bg-backdark/50;
   @apply border-black/10 dark:border-white/25;
   @apply backdrop-blur-sm;
 }
