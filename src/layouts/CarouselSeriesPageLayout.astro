@@ -12,6 +12,7 @@ const { frontmatter, id } = Astro.props;
 const series: any = await getEntry("series", id);
 const { Content } = await series.render();
 const pieces = await getEntries(series.data.pieces);
+const initialIndex = frontmatter?.initialIndex || 0;
 ---
 
 <!doctype html>
@@ -34,7 +35,7 @@ const pieces = await getEntries(series.data.pieces);
             {frontmatter.title}
           </div>
           <div class='mx-auto max-w-screen-lg'>
-            <Carousel images={pieces} />
+            <Carousel images={pieces} initialIndex={initialIndex} />
           </div>
         </div>
       </section>

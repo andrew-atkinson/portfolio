@@ -1,7 +1,7 @@
 ---
 import "keen-slider/keen-slider.min.css";
 import { Image } from "astro:assets";
-const { images } = Astro.props;
+const { images, initialIndex } = Astro.props;
 ---
 
 <style is:global>
@@ -250,9 +250,15 @@ const { images } = Astro.props;
     });
   }
 
+  const _containerForInitial = document.querySelector(".carousel-container");
+  const initialIndex = _containerForInitial
+    ? Number((_containerForInitial as HTMLElement).dataset.initialIndex)
+    : 0;
+
   let slider = new KeenSlider(
     "#my-keen-slider",
     {
+      initial: initialIndex,
       loop: true,
       slides: {
         origin: "center",
@@ -333,7 +339,7 @@ const { images } = Astro.props;
   })();
 </script>
 
-<div class='carousel-container'>
+<div class='carousel-container' data-initial-index={initialIndex}>
   <div id='my-keen-slider' class='keen-slider'>
     {
       images.map((image: any, index: number) => (
