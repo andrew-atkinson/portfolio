@@ -1,7 +1,7 @@
 ---
 import "keen-slider/keen-slider.min.css";
 import { Image } from "astro:assets";
-const { images, initialIndex } = Astro.props;
+const { images, initialIndex, frontmatter } = Astro.props;
 ---
 
 <style is:global>
@@ -339,30 +339,40 @@ const { images, initialIndex } = Astro.props;
   })();
 </script>
 
-<div class='carousel-container' data-initial-index={initialIndex}>
-  <div id='my-keen-slider' class='keen-slider'>
-    {
-      images.map((image: any, index: number) => (
-        <div>
-          <a target='_blank' style='text-decoration: none'>
-            {
-              <div
-                style='display:flex; flex-direction: column; align-items: center;'
-                id={`slide${index}`}
-                class={`keen-slider__slide number-slide${index}`}
-              >
-                <Image src={image.data.src} alt={image.data.title} />
-                <div
-                  id={`description${index}`}
-                  class='text-base font-thin text-center'
-                >
-                  <p>{image.data.title}</p>
-                </div>
-              </div>
-            }
-          </a>
-        </div>
-      ))
-    }
+<section class='animate'>
+  <div class='relative bg-backlight dark:bg-backdark'>
+    <div
+      class='p-5 mx-auto max-w-screen-lg opacity-75 text-lg tracking-wider text-center mt-14'
+    >
+      {frontmatter.title}
+    </div>
+    <div class='mx-auto max-w-screen-lg'></div>
+    <div class='carousel-container' data-initial-index={initialIndex}>
+      <div id='my-keen-slider' class='keen-slider'>
+        {
+          images.map((image: any, index: number) => (
+            <div>
+              <a target='_blank' style='text-decoration: none'>
+                {
+                  <div
+                    style='display:flex; flex-direction: column; align-items: center;'
+                    id={`slide${index}`}
+                    class={`keen-slider__slide number-slide${index}`}
+                  >
+                    <Image src={image.data.src} alt={image.data.title} />
+                    <div
+                      id={`description${index}`}
+                      class='text-base font-thin text-center'
+                    >
+                      <p>{image.data.title}</p>
+                    </div>
+                  </div>
+                }
+              </a>
+            </div>
+          ))
+        }
+      </div>
+    </div>
   </div>
-</div>
+</section>
