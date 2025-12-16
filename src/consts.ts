@@ -14,16 +14,10 @@ export const ABOUT: Page = {
   DESCRIPTION: "Bio and Contact",
 };
 
-// Blog Page
-export const BLOG: Page = {
-  TITLE: "Blog",
-  DESCRIPTION: "Writing on topics I am passionate about.",
-};
-
 // Projects Page
 export const PROJECTS: Page = {
   TITLE: "Projects",
-  DESCRIPTION: "Recent projects I have worked on.",
+  DESCRIPTION: "Recent projects",
 };
 
 // Search Page
@@ -43,10 +37,6 @@ export const LINKS: Links = [
     HREF: "/about",
   },
   {
-    TEXT: "Blog",
-    HREF: "/blog",
-  },
-  {
     TEXT: "Projects",
     HREF: "/projects",
   },
@@ -55,27 +45,21 @@ export const LINKS: Links = [
 // Socials
 export const SOCIALS: Socials = [
   {
-    NAME: "Email",
-    ICON: "email",
-    TEXT: "markhorn.dev@gmail.com",
-    HREF: "mailto:markhorn.dev@gmail.com",
-  },
-  {
     NAME: "Github",
     ICON: "github",
-    TEXT: "markhorn-dev",
-    HREF: "https://github.com/markhorn-dev/astro-sphere",
+    TEXT: "andrew-atkinson",
+    HREF: "https://github.com/andrew-atkinson",
   },
   {
     NAME: "LinkedIn",
     ICON: "linkedin",
-    TEXT: "markhorn-dev",
-    HREF: "https://www.linkedin.com/in/markhorn-dev/",
+    TEXT: "andrew peter atkinson",
+    HREF: "https://www.linkedin.com/in/andrewpeteratkinson/",
   },
   {
-    NAME: "Twitter",
-    ICON: "twitter-x",
-    TEXT: "markhorn_dev",
-    HREF: "https://twitter.com/markhorn_dev",
+    NAME: "Bluesky",
+    ICON: "bluesky",
+    TEXT: "songofthelark.bsky.social",
+    HREF: "https://bsky.app/profile/songofthelark.bsky.social",
   },
 ];

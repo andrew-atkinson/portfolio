@@ -7,7 +7,7 @@ import Container from "@components/Container.astro";
   <div class='animate'>
     <section class='py-5'>
       <Container size='md'>
-        <div class='flex items-center justify-center sm:justify-end'>
+        <div class='flex items-center justify-center'>
           <button
             id='back-to-top'
             aria-label='Back to top of page'
@@ -50,60 +50,17 @@ import Container from "@components/Container.astro";
       class='py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25'
     >
       <Container size='md'>
-        <div class='grid grid-cols-1 sm:grid-cols-2 gap-3'>
-          <div class='flex flex-col items-center sm:items-start'>
-            <a
-              href='/'
-              class='flex gap-1 w-fit font-semibold text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out'
-            >
-              <svg class='size-6 fill-current'>
-                <use href='/brand.svg#brand'></use>
-              </svg>
-              {SITE.TITLE}
-            </a>
-          </div>
-          <div class='flex gap-2 justify-center sm:justify-end items-center'>
-            <span class='relative flex h-3 w-3'>
-              <span
-                class='animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300'
-              ></span>
-              <span
-                class='relative inline-flex rounded-full h-3 w-3 bg-green-500'
-              ></span>
-            </span>
-            All systems normal
-          </div>
-        </div>
-      </Container>
-    </section>
-
-    <section
-      class='py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25'
-    >
-      <Container size='md'>
-        <div class='h-full grid grid-cols-1 sm:grid-cols-2 gap-3'>
-          <div
-            class='order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start'
-          >
-            <div class='legal'>
-              <a
-                href='/legal/terms'
-                class='text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out'
-              >
-                Terms
-              </a> |
-              <a
-                href='/legal/privacy'
-                class='text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out'
-              >
-                Privacy
-              </a>
-            </div>
-            <div class='text-sm mt-2'>&copy; 2024 | All rights reserved</div>
-          </div>
-
-          <div class='order-1 sm:order-2 flex justify-center sm:justify-end'>
+        <div class='h-full grid grid-cols-1 gap-3'>
+          <div class='order-1 flex justify-center'>
             <div class='flex flex-wrap gap-1 items-center justify-center'>
+              <div class='flex flex-col items-center sm:items-start'>
+                <a
+                  href='/'
+                  class='flex gap-1 w-fit font-semibold text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out'
+                >
+                  {SITE.TITLE}
+                </a>
+              </div>
               {
                 SOCIALS.map((SOCIAL) => (
                   <a
@@ -124,22 +81,22 @@ import Container from "@components/Container.astro";
       </Container>
     </section>
   </div>
+
+  <script is:inline>
+    function goBackToTop(event) {
+      event.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+
+    function initializeBackToTop() {
+      const backToTop = document.getElementById("back-to-top");
+      backToTop?.addEventListener("click", goBackToTop);
+    }
+
+    document.addEventListener("astro:after-swap", initializeBackToTop);
+    initializeBackToTop();
+  </script>
 </footer>
-
-<script is:inline>
-  function goBackToTop(event) {
-    event.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-
-  function initializeBackToTop() {
-    const backToTop = document.getElementById("back-to-top");
-    backToTop?.addEventListener("click", goBackToTop);
-  }
-
-  document.addEventListener("astro:after-swap", initializeBackToTop);
-  initializeBackToTop();
-</script>
