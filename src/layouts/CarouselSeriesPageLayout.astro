@@ -8,10 +8,10 @@ import { SITE } from "@consts";
 import Carousel from "@components/Carousel.astro";
 import { getEntries, getEntry } from "astro:content";
 import ImageRow from "@components/ImageRow.astro";
+import TextContent from "@components/TextContent.astro";
 
 const { frontmatter, id } = Astro.props;
 const series: any = await getEntry("series", id);
-const { Content } = await series.render();
 const pieces = await getEntries(series.data.pieces);
 const initialIndex = frontmatter?.initialIndex || 0;
 ---
@@ -33,13 +33,7 @@ const initialIndex = frontmatter?.initialIndex || 0;
         initialIndex={initialIndex}
         frontmatter={frontmatter}
       />
-      <section class='animate'>
-        <div class='relative bg-backlight dark:bg-backdark'>
-          <div class='mx-auto max-w-screen-lg p-5 pb-16 text-base'>
-            <Content />
-          </div>
-        </div>
-      </section>
+      <TextContent content={series} />
       <ImageRow images={pieces} />
     </main>
     <Footer />
