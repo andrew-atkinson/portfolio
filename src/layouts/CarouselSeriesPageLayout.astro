@@ -7,6 +7,7 @@ import Drawer from "@components/Drawer.astro";
 import { SITE } from "@consts";
 import Carousel from "@components/Carousel.astro";
 import { getEntries, getEntry } from "astro:content";
+import ImageRow from "@components/ImageRow.astro";
 
 const { frontmatter, id } = Astro.props;
 const series: any = await getEntry("series", id);
@@ -46,6 +47,7 @@ const initialIndex = frontmatter?.initialIndex || 0;
           </div>
         </div>
       </section>
+      <ImageRow images={pieces} />
     </main>
     <Footer />
   </body>
