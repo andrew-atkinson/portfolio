@@ -28,18 +28,11 @@ const initialIndex = frontmatter?.initialIndex || 0;
     <Header />
     <Drawer />
     <main>
-      <section class='animate'>
-        <div class='relative bg-backlight dark:bg-backdark'>
-          <div
-            class='p-5 mx-auto max-w-screen-lg opacity-75 text-lg tracking-wider text-center mt-14'
-          >
-            {frontmatter.title}
-          </div>
-          <div class='mx-auto max-w-screen-lg'>
-            <Carousel images={pieces} initialIndex={initialIndex} />
-          </div>
-        </div>
-      </section>
+      <Carousel
+        images={pieces}
+        initialIndex={initialIndex}
+        frontmatter={frontmatter}
+      />
       <section class='animate'>
         <div class='relative bg-backlight dark:bg-backdark'>
           <div class='mx-auto max-w-screen-lg p-5 pb-16 text-base'>
