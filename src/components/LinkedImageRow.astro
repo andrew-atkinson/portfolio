@@ -7,9 +7,6 @@ const series = await getEntry("series", seriesName.toLowerCase() as any);
 
 const pieces =
   series && series.data.pieces ? await getEntries(series.data.pieces) : [];
-
-console.log("series in LinkedImageRow:", series);
-console.log("pieces in LinkedImageRow:", pieces);
 ---
 
 <a href={"/series/" + seriesName.toLowerCase()}>
