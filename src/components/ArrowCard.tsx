@@ -1,6 +1,5 @@
 import { cn, truncateText } from "@lib/utils";
 import type { CollectionEntry } from "astro:content";
-// import { createEffect } from "solid-js";
 
 type Props = {
   entry: CollectionEntry<"blog"> | CollectionEntry<"projects">;
@@ -8,40 +7,43 @@ type Props = {
   showControls: () => boolean;
 };
 
-// createEffect(() => {});
-
 export default function ArrowCard({ entry, pill, showControls }: Props) {
+  console.log("arrowcard entry", entry.data.thumbnail);
+
   return (
     <a
       href={`/${entry.collection}/${entry.slug}`}
       class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"
     >
+      {entry.data.thumbnail ? (
+        <img
+          src={`../src/assets/${entry.data.thumbnail}.jpg`}
+          alt={entry.data.thumbnail}
+          width={100}
+          height={100}
+        />
+      ) : (
+        <p>no image</p>
+      )}
       <div class="w-full group-hover:text-black group-hover:dark:text-white blend">
-        <div class="flex flex-wrap items-center gap-2">
+        {/* <div class="flex flex-wrap items-center gap-2">
           {pill && (
             <div class="text-sm capitalize px-2 py-0.5 rounded-full border border-black/15 dark:border-white/25">
               {entry.collection === "blog" ? "post" : "project"}
             </div>
           )}
-          {/* <div class="text-sm uppercase">
-            {formatDate(entry.data.date)}
-          </div> */}
-        </div>
+        </div> */}
         <div class="font-semibold mt-3 text-black dark:text-white line-clamp-2">
           {entry.data.title}
         </div>
 
         <div class="text-sm line-clamp-2">{entry.data.summary}</div>
         <ul class={cn("flex flex-wrap mt-2 gap-1", showControls() && "hidden")}>
-          {entry.data.tags.map(
-            (
-              tag: string // this line has an error; Parameter 'tag' implicitly has an 'any' type.ts(7006)
-            ) => (
-              <li class="text-xs uppercase py-0.5 px-2 rounded bg-black/5 dark:bg-white/20 text-black/75 dark:text-white/75">
-                {truncateText(tag, 20)}
-              </li>
-            )
-          )}
+          {entry.data.tags.map((tag: string) => (
+            <li class="text-xs uppercase py-0.5 px-2 rounded bg-black/5 dark:bg-white/20 text-black/75 dark:text-white/75">
+              {truncateText(tag, 20)}
+            </li>
+          ))}
         </ul>
       </div>
       <svg

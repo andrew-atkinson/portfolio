@@ -1,5 +1,4 @@
 import { defineCollection, z, reference } from "astro:content";
-import { glob } from "astro/loaders";
 
 const about = defineCollection({
   type: "content",
@@ -16,6 +15,7 @@ const blog = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()),
     draft: z.boolean().optional(),
+    thumbnail: z.string().optional(),
   }),
 });
 
@@ -55,16 +55,18 @@ const series = defineCollection({
 
 const projects = defineCollection({
   type: "content",
-  schema: z.object({
-    title: z.string(),
-    summary: z.string(),
-    date: z.coerce.date(),
-    tags: z.array(z.string()),
-    draft: z.boolean().optional(),
-    demoUrl: z.string().optional(),
-    repoUrl: z.string().optional(),
-    // series: z.array(series).optional(),
-  }),
+  schema: () =>
+    z.object({
+      title: z.string(),
+      summary: z.string(),
+      date: z.coerce.date(),
+      tags: z.array(z.string()),
+      draft: z.boolean().optional(),
+      demoUrl: z.string().optional(),
+      repoUrl: z.string().optional(),
+      series: z.array(reference("series")).optional(),
+      thumbnail: z.string().optional(),
+    }),
 });
 
 const legal = defineCollection({
