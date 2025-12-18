@@ -359,7 +359,12 @@ const { images, initialIndex, frontmatter } = Astro.props;
                     id={`slide${index}`}
                     class={`keen-slider__slide number-slide${index}`}
                   >
-                    <Image src={image.data.src} alt={image.data.title} />
+                    <Image
+                      src={image.data.src}
+                      alt={image.data.title}
+                      width={1000}
+                      height={1000}
+                    />
                     <div
                       id={`description${index}`}
                       class='text-base font-thin text-center'
