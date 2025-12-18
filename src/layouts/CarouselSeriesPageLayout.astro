@@ -13,11 +13,13 @@ const initialIndex = frontmatter?.initialIndex || 0;
 ---
 
 <PageLayout title={frontmatter.title} description={frontmatter.description}>
-  <Carousel
-    images={pieces}
-    initialIndex={initialIndex}
-    frontmatter={frontmatter}
-  />
-  <TextContent content={series} />
-  <ImageRow images={pieces} />
+  <div class='pb-10'>
+    <Carousel
+      images={pieces}
+      initialIndex={initialIndex}
+      frontmatter={frontmatter}
+    />
+    <TextContent content={series} />
+    <ImageRow images={pieces} />
+  </div>
 </PageLayout>
