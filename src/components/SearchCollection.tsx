@@ -193,7 +193,11 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
             <ul class="flex flex-col gap-3">
               {collection().map((entry) => (
                 <li>
-                  <ArrowCard entry={entry} />
+                  <ArrowCard
+                    entry={entry}
+                    pill={true}
+                    showControls={showControls as () => boolean}
+                  />
                 </li>
               ))}
             </ul>
