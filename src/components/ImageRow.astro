@@ -8,7 +8,7 @@ const { images } = Astro.props;
     <div class='mx-auto max-w-screen-lg pb-8 p-4'>
       <div class='flex flex-wrap justify-center gap-2'>
         {
-          images.map((image: any, index: number) => (
+          images.map((image: any) => (
             <div
               class='flex-shrink-0 max-h-100px'
               style={`width: min(calc((100% - ${images.length - 1} * 1rem) / ${images.length}), 200px);`}
@@ -17,6 +17,7 @@ const { images } = Astro.props;
                 src={image.data.src}
                 alt={image.data.alt}
                 class='w-full h-auto object-contain'
+                loading={"eager"}
               />
             </div>
           ))
