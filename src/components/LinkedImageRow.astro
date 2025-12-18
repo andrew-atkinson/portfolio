@@ -9,9 +9,11 @@ const pieces =
   series && series.data.pieces ? await getEntries(series.data.pieces) : [];
 ---
 
-<div>
+<section class='animate'>
   <h2 class='mt-1 mb-1.5'>{seriesName}</h2>
-  <a href={"/series/" + seriesName.toLowerCase()}>
-    <ImageRow images={pieces} />
-  </a>
-</div>
+  <div class='flex flex-wrap justify-center gap-2 bg-slate-500/20'>
+    <a href={"/series/" + seriesName.toLowerCase()}>
+      <ImageRow images={pieces} />
+    </a>
+  </div>
+</section>
