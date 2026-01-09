@@ -7,9 +7,7 @@ type Props = {
   showControls: () => boolean;
 };
 
-export default function ArrowCard({ entry, pill, showControls }: Props) {
-  console.log("arrowcard entry", entry.data.thumbnail);
-
+export default function ArrowCard({ entry, showControls }: Props) {
   return (
     <a
       href={`/${entry.collection}/${entry.slug}`}
@@ -26,13 +24,6 @@ export default function ArrowCard({ entry, pill, showControls }: Props) {
         <p>no image</p>
       )}
       <div class="w-full group-hover:text-black group-hover:dark:text-white blend">
-        {/* <div class="flex flex-wrap items-center gap-2">
-          {pill && (
-            <div class="text-sm capitalize px-2 py-0.5 rounded-full border border-black/15 dark:border-white/25">
-              {entry.collection === "blog" ? "post" : "project"}
-            </div>
-          )}
-        </div> */}
         <div class="font-semibold mt-3 text-black dark:text-white line-clamp-2">
           {entry.data.title}
         </div>
