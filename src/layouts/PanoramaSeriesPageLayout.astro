@@ -1,0 +1,27 @@
+---
+import "@styles/global.css";
+import PageLayout from "./PageLayout.astro";
+import Panorama from "@components/Panorama.astro";
+import { getEntries, getEntry } from "astro:content";
+import ImageRow from "@components/ImageRow.astro";
+import TextContent from "@components/TextContent.astro";
+
+const { frontmatter, id, seriesType = "series" } = Astro.props;
+const series: any = await getEntry(seriesType, id);
+const pieces = await getEntries(series.data.pieces);
+const initialIndex =
+  frontmatter?.initialIndex || Math.floor(frontmatter.pieces.length / 2);
+---
+
+<PageLayout title={frontmatter.title} description={frontmatter.description}>
+  <div class='pb-10'>
+    <Panorama
+      images={pieces}
+      initialIndex={initialIndex}
+      frontmatter={frontmatter}
+      title={frontmatter.title}
+    />
+    <TextContent content={series} />
+    <ImageRow images={pieces} gap='0' />
+  </div>
+</PageLayout>

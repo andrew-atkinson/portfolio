@@ -1,0 +1,295 @@
+---
+import "keen-slider/keen-slider.min.css";
+import { Image } from "astro:assets";
+const { images, initialIndex, title } = Astro.props;
+
+console.log("Panorama component props:", title);
+---
+
+<style is:global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  [class^="number-slide"],
+  [class*=" number-slide"] {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 1;
+
+    @apply prose dark:prose-invert max-w-full pb-12;
+    padding-bottom: 0px;
+  }
+
+  .navigation-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .keen-slider {
+    flex: 1;
+    max-width: 100vh;
+    min-width: 50vh;
+    max-height: 100vh;
+    object-fit: contain;
+    align-self: center;
+  }
+
+  .arrow {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    cursor: pointer;
+    display: block;
+    z-index: 10;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .arrow--left {
+    left: 5px;
+    fill: "#fff";
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg'  stroke='grey' fill-opacity='0.5' viewBox='0 0 24 24' %3E%3Cpath d='M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z' %3E%3C/path%3E%3C/svg%3E");
+  }
+
+  .arrow--right {
+    left: auto;
+    right: 5px;
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg'  stroke='grey' fill-opacity='0.5' viewBox='0 0 24 24' %3E%3Cpath d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'%3E%3C/path%3E%3C/svg%3E");
+  }
+
+  .arrow--disabled.arrow--left {
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' fill-opacity='0.5' stroke='darkgray' viewBox='0 0 24 24' %3E%3Cpath d='M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z' %3E%3C/path%3E%3C/svg%3E");
+  }
+
+  .arrow--disabled.arrow--right {
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' fill-opacity='0.5' stroke='darkgray' viewBox='0 0 24 24' %3E%3Cpath d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'%3E%3C/path%3E%3C/svg%3E");
+  }
+
+  .carousel-container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+</style>
+
+<script>
+  import KeenSlider from "keen-slider";
+
+  function navigation(slider: any) {
+    let wrapper: ChildNode,
+      arrowLeft: HTMLDivElement,
+      arrowRight: HTMLDivElement;
+
+    function markup(remove: boolean) {
+      wrapperMarkup(remove);
+      arrowMarkup(remove);
+    }
+
+    function removeElement(element: ChildNode) {
+      if (element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
+    }
+
+    function createDiv(className: string) {
+      var div = document.createElement("div");
+      var classNames = className.split(" ");
+      classNames.forEach((name) => div.classList.add(name));
+      return div;
+    }
+
+    function arrowMarkup(remove: boolean) {
+      if (remove) {
+        removeElement(arrowLeft);
+        removeElement(arrowRight);
+        return;
+      }
+      arrowLeft = createDiv("arrow arrow--left");
+      arrowLeft.addEventListener("click", () => slider.prev());
+      arrowRight = createDiv("arrow arrow--right");
+      arrowRight.addEventListener("click", () => slider.next());
+
+      wrapper.appendChild(arrowLeft);
+      wrapper.appendChild(arrowRight);
+    }
+
+    function wrapperMarkup(remove: boolean) {
+      if (remove) {
+        let parent = wrapper.parentNode;
+        while (wrapper.firstChild) {
+          if (parent) {
+            parent.insertBefore(wrapper.firstChild, wrapper);
+          }
+        }
+        removeElement(wrapper);
+        return;
+      }
+      wrapper = createDiv("navigation-wrapper");
+      slider.container.parentNode.appendChild(wrapper);
+      wrapper.appendChild(slider.container);
+    }
+
+    function updateClasses() {
+      let slide = slider.track.details.rel;
+      slide === 0
+        ? arrowLeft.classList.add("arrow--disabled")
+        : arrowLeft.classList.remove("arrow--disabled");
+      slide === slider.track.details.slides.length - 1
+        ? arrowRight.classList.add("arrow--disabled")
+        : arrowRight.classList.remove("arrow--disabled");
+
+      let currentElement = document.getElementById(
+        `slide${slider.track.details.rel}`
+      );
+    }
+
+    slider.on("created", () => {
+      markup(false);
+      updateClasses();
+    });
+    slider.on("optionsChanged", () => {
+      console.log(2);
+      markup(true);
+      markup(false);
+      updateClasses();
+    });
+    slider.on("slideChanged", () => {
+      updateClasses();
+    });
+    slider.on("destroyed", () => {
+      markup(true);
+    });
+  }
+
+  const _containerForInitial = document.querySelector(".carousel-container");
+  const initialIndex = _containerForInitial
+    ? Number((_containerForInitial as HTMLElement).dataset.initialIndex)
+    : 0;
+
+  let slider = new KeenSlider(
+    "#my-keen-slider",
+    {
+      initial: initialIndex,
+      loop: false,
+      slides: {
+        origin: "center",
+        perView: 1.5,
+        spacing: 0,
+      },
+    },
+    [navigation]
+  );
+
+  // Scoped keyboard navigation: active only when hovered OR focused (accessibility)
+  (function () {
+    const container = document.querySelector(".carousel-container");
+    if (!container) return;
+
+    // make container focusable for keyboard users
+    if (!container.hasAttribute("tabindex")) {
+      container.setAttribute("tabindex", "0");
+    }
+    if (!container.hasAttribute("aria-roledescription")) {
+      container.setAttribute("aria-roledescription", "carousel");
+    }
+
+    let hoverActive = false;
+    let focusActive = false;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "ArrowLeft") {
+        slider.prev();
+        event.preventDefault();
+      } else if (event.key === "ArrowRight") {
+        slider.next();
+        event.preventDefault();
+      }
+    }
+
+    function updateKeyListener() {
+      if (hoverActive || focusActive) {
+        document.addEventListener("keydown", onKeyDown);
+      } else {
+        document.removeEventListener("keydown", onKeyDown);
+      }
+    }
+
+    function onMouseEnter() {
+      hoverActive = true;
+      updateKeyListener();
+    }
+    function onMouseLeave() {
+      hoverActive = false;
+      updateKeyListener();
+    }
+    function onFocus() {
+      focusActive = true;
+      updateKeyListener();
+    }
+    function onBlur() {
+      focusActive = false;
+      updateKeyListener();
+    }
+
+    container.addEventListener("mouseenter", onMouseEnter);
+    container.addEventListener("mouseleave", onMouseLeave);
+    // use capture so focus/blur fired when any child receives focus
+    container.addEventListener("focus", onFocus, true);
+    container.addEventListener("blur", onBlur, true);
+
+    // Ensure we remove listeners when the slider is destroyed
+    if (slider && slider.on) {
+      slider.on("destroyed", () => {
+        document.removeEventListener("keydown", onKeyDown);
+        container.removeEventListener("mouseenter", onMouseEnter);
+        container.removeEventListener("mouseleave", onMouseLeave);
+        container.removeEventListener("focus", onFocus, true);
+        container.removeEventListener("blur", onBlur, true);
+      });
+    }
+  })();
+</script>
+
+<section class='animate'>
+  <div class='relative bg-backlight dark:bg-backdark'>
+    <div
+      class='p-5 mx-auto max-w-screen-lg mt-14 flex flex-wrap justify-center'
+    >
+      <div class='opacity-75 pb-5 text-lg tracking-wider'>{title}</div>
+      <div class='carousel-container' data-initial-index={initialIndex}>
+        <div id='my-keen-slider' class='keen-slider'>
+          {
+            images.map((image: any, index: number) => (
+              <div>
+                <a target='_blank' style='text-decoration: none'>
+                  {
+                    <div
+                      style='display:flex; flex-direction: column; align-items: center;'
+                      id={`slide${index}`}
+                      class={`keen-slider__slide number-slide${index}`}
+                    >
+                      <Image
+                        src={image.data.src}
+                        alt={image.data.title}
+                        width={1000}
+                        height={700}
+                      />
+                    </div>
+                  }
+                </a>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
