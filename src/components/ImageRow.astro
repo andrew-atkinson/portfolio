@@ -1,10 +1,10 @@
 ---
 import { Image } from "astro:assets";
-const { images } = Astro.props;
+let { images, gap = "2" } = Astro.props;
 ---
 
 <section class='animate'>
-  <div class='flex flex-wrap justify-center gap-2 w-full'>
+  <div class={"flex flex-wrap justify-center w-full gap-" + gap}>
     {
       images.map((image: any) => (
         <div
