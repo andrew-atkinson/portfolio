@@ -5,24 +5,34 @@ import TopLayout from "@layouts/TopLayout.astro";
 import BottomLayout from "@layouts/BottomLayout.astro";
 import Search from "@components/Search";
 import { SEARCH } from "@consts";
+import Panorama from "@components/Panorama.astro";
 
 const posts = (await getCollection("blog")).filter((post) => !post.data.draft);
 
 const projects = (await getCollection("projects")).filter(
-  (post) => !post.data.draft,
+  (post) => !post.data.draft
 );
 
-const data = [...posts, ...projects] as CollectionEntry<"blog">[];
+const series = await getCollection("series");
+
+const panoramas = await getCollection("panoramas");
+
+const data = [
+  ...posts,
+  ...projects,
+  ...series,
+  ...panoramas,
+] as CollectionEntry<"blog">[];
 ---
 
 <PageLayout title={SEARCH.TITLE} description={SEARCH.DESCRIPTION}>
   <TopLayout>
-    <div class="animate page-heading">
+    <div class='animate page-heading'>
       {SEARCH.TITLE}
     </div>
   </TopLayout>
   <BottomLayout>
-    <div class="animate">
+    <div class='animate'>
       <Search client:load data={data} />
     </div>
   </BottomLayout>

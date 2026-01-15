@@ -1,22 +1,29 @@
+import { Image } from "astro:assets";
 import { cn, truncateText } from "@lib/utils";
 import type { CollectionEntry } from "astro:content";
 
 type Props = {
-  entry: CollectionEntry<"blog"> | CollectionEntry<"projects">;
+  entry:
+    | CollectionEntry<"blog">
+    | CollectionEntry<"projects">
+    | CollectionEntry<"panoramas">
+    | CollectionEntry<"series">;
   pill?: boolean;
   showControls: () => boolean;
 };
 
 export default function ArrowCard({ entry, showControls }: Props) {
+  console.log("entry", entry);
+
   return (
     <a
       href={`/${entry.collection}/${entry.slug}`}
       class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"
     >
-      {entry.data.thumbnail ? (
+      {entry.data?.thumbnail ? (
         <img
-          src={`../src/assets/${entry.data.thumbnail}.jpg`}
-          alt={entry.data.thumbnail}
+          src={`../src/assets/${entry.data?.thumbnail}`}
+          alt={entry.data?.thumbnail}
           width={100}
           height={100}
         />
@@ -28,13 +35,18 @@ export default function ArrowCard({ entry, showControls }: Props) {
           {entry.data.title}
         </div>
 
-        <div class="text-sm line-clamp-2">{entry.data.summary}</div>
+        <div class="text-sm line-clamp-2">
+          {entry.data?.summary ||
+            entry.data?.description ||
+            entry.data?.project}
+        </div>
         <ul class={cn("flex flex-wrap mt-2 gap-1", showControls() && "hidden")}>
-          {entry.data.tags.map((tag: string) => (
-            <li class="text-xs uppercase py-0.5 px-2 rounded bg-black/5 dark:bg-white/20 text-black/75 dark:text-white/75">
-              {truncateText(tag, 20)}
-            </li>
-          ))}
+          {entry.data.tags &&
+            entry.data.tags.map((tag: string) => (
+              <li class="text-xs uppercase py-0.5 px-2 rounded bg-black/5 dark:bg-white/20 text-black/75 dark:text-white/75">
+                {truncateText(tag, 20)}
+              </li>
+            ))}
         </ul>
       </div>
       <svg

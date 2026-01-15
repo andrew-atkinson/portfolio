@@ -8,7 +8,11 @@ import SearchBar from "@components/SearchBar";
 type Props = {
   entry_name: string;
   tags: string[];
-  data: CollectionEntry<"blog">[] | CollectionEntry<"projects">[];
+  data:
+    | CollectionEntry<"blog">[]
+    | CollectionEntry<"projects">[]
+    | CollectionEntry<"panoramas">[]
+    | CollectionEntry<"series">[];
 };
 
 export default function SearchCollection({ entry_name, data, tags }: Props) {
@@ -23,7 +27,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
   const [showControls, setShowControls] = createSignal(true);
 
   const fuse = new Fuse(coerced, {
-    keys: ["slug", "data.title", "data.summary", "data.tags"],
+    keys: ["slug", "data.title", "data.summary", "data.tags", "data.project"],
     includeMatches: true,
     minMatchCharLength: 2,
     threshold: 0.4,
