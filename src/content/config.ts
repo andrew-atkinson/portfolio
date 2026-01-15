@@ -50,6 +50,7 @@ const series = defineCollection({
     project: z.string().optional(),
     id: z.string().optional(),
     initialIndex: z.number().optional(),
+    thumbnail: z.string().optional(),
   }),
 });
 
@@ -62,6 +63,7 @@ const panoramas = defineCollection({
     project: z.string().optional(),
     id: z.string().optional(),
     initialIndex: z.number().optional(),
+    thumbnail: z.string().optional(),
   }),
 });
 
