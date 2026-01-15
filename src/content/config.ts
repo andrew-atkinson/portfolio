@@ -53,6 +53,18 @@ const series = defineCollection({
   }),
 });
 
+const panoramas = defineCollection({
+  type: "content",
+  schema: z.object({
+    layout: z.string().optional(),
+    title: z.string(),
+    pieces: z.array(reference("images")),
+    project: z.string().optional(),
+    id: z.string().optional(),
+    initialIndex: z.number().optional(),
+  }),
+});
+
 const projects = defineCollection({
   type: "content",
   schema: () =>
@@ -85,4 +97,5 @@ export const collections = {
   series,
   pieces,
   images,
+  panoramas,
 };
