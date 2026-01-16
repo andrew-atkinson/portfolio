@@ -13,8 +13,6 @@ type Props = {
 };
 
 export default function ArrowCard({ entry, showControls }: Props) {
-  console.log("entry", entry);
-
   return (
     <a
       href={`/${entry.collection}/${entry.slug}`}
