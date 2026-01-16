@@ -1,6 +1,14 @@
-import { Image } from "astro:assets";
 import { cn, truncateText } from "@lib/utils";
 import type { CollectionEntry } from "astro:content";
+
+interface CommonEntryData {
+  title: string;
+  summary?: string;
+  description?: string;
+  project?: string;
+  tags?: string[];
+  thumbnail?: string;
+}
 
 type Props = {
   entry:
@@ -12,35 +20,42 @@ type Props = {
   showControls: () => boolean;
 };
 
-export default function ArrowCard({ entry, showControls }: Props) {
+export default function ArrowCard({ entry, showControls, pill }: Props) {
+  const entryData = entry.data as CommonEntryData;
+
   return (
     <a
       href={`/${entry.collection}/${entry.slug}`}
-      class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"
+      class="group p-4 gap-3 flex border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out items-center"
     >
-      {entry.data?.thumbnail ? (
+      {entryData?.thumbnail ? (
         <img
-          src={`../src/assets/${entry.data?.thumbnail}`}
-          alt={entry.data?.thumbnail}
+          src={`../src/assets/${entryData.thumbnail}`}
+          alt={entryData.thumbnail}
           width={100}
           height={100}
         />
-      ) : (
-        <p>no image</p>
-      )}
+      ) : null}
       <div class="w-full group-hover:text-black group-hover:dark:text-white blend">
-        <div class="font-semibold mt-3 text-black dark:text-white line-clamp-2">
-          {entry.data.title}
+        <div class="text-black dark:text-white line-clamp-2">
+          {pill && (
+            <div class="w-min text-sm capitalize border-black/15 dark:border-white/25 opacity-60">
+              {entry.collection}
+            </div>
+          )}
+          <div class="items-center py-0.5 font-semibold text-black dark:text-white line-clamp-2">
+            {entryData?.title || "No title available"}
+          </div>
         </div>
-
         <div class="text-sm line-clamp-2">
-          {entry.data?.summary ||
-            entry.data?.description ||
-            entry.data?.project}
+          {entryData?.summary ||
+            entryData?.description ||
+            entryData?.project ||
+            "No description available."}
         </div>
         <ul class={cn("flex flex-wrap mt-2 gap-1", showControls() && "hidden")}>
-          {entry.data.tags &&
-            entry.data.tags.map((tag: string) => (
+          {entryData?.tags &&
+            entryData.tags.map((tag: string) => (
               <li class="text-xs uppercase py-0.5 px-2 rounded bg-black/5 dark:bg-white/20 text-black/75 dark:text-white/75">
                 {truncateText(tag, 20)}
               </li>
