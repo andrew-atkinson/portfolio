@@ -1,0 +1,16 @@
+---
+import "@styles/global.css";
+import SingleImage from "@components/SingleImage.astro";
+import PageLayout from "@layouts/PageLayout.astro";
+
+const { frontmatter, id } = Astro.props;
+---
+
+<PageLayout
+  title={frontmatter.data.title}
+  description={frontmatter.data.description}
+>
+  <div class='pb-10'>
+    <SingleImage image={frontmatter} id={id} frontmatter={frontmatter} />
+  </div>
+</PageLayout>

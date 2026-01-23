@@ -1,6 +1,5 @@
 ---
-import SingleImage from "@components/SingleImage.astro";
-import PageLayout from "@layouts/PageLayout.astro";
+import SingleImageLayout from "@layouts/SingleImageLayout.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -17,11 +16,4 @@ const { slug } = Astro.params;
 const { frontmatter } = Astro.props;
 ---
 
-<PageLayout
-  title={frontmatter.data.title}
-  description={frontmatter.data.description}
->
-  <div class='pb-10'>
-    <SingleImage slug={slug} frontmatter={frontmatter} />
-  </div>
-</PageLayout>
+<SingleImageLayout id={slug} frontmatter={frontmatter} />
