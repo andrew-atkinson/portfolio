@@ -1,0 +1,27 @@
+---
+import SingleImage from "@components/SingleImage.astro";
+import PageLayout from "@layouts/PageLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const images = await getCollection("images");
+  let imageArr = images.map((image) => ({
+    params: { slug: image.slug },
+    props: { frontmatter: image },
+  }));
+
+  return imageArr;
+}
+
+const { slug } = Astro.params;
+const { frontmatter } = Astro.props;
+---
+
+<PageLayout
+  title={frontmatter.data.title}
+  description={frontmatter.data.description}
+>
+  <div class='pb-10'>
+    <SingleImage slug={slug} frontmatter={frontmatter} />
+  </div>
+</PageLayout>

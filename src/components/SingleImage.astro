@@ -2,13 +2,27 @@
 import { getEntry } from "astro:content";
 import { Image } from "astro:assets";
 
-const { imageName } = Astro.props;
-const image: any = await getEntry("images", imageName.toLowerCase() as any);
+const { slug } = Astro.props;
+const image: any = await getEntry("images", slug.toLowerCase() as any);
 ---
 
-<div class='mx-auto max-w-screen-lg'>
-  <Image src={image.data.src} alt={image.data.alt} width='1000' height='1000' />
-  <div id={image.data.title} class='text-base font-thin text-center'>
-    <p>{image.data.title}</p>
+<section class='animate'>
+  <div class='relative bg-backlight dark:bg-backdark'>
+    <div
+      class='p-5 mx-auto max-w-screen-lg mt-14 flex flex-wrap justify-center'
+    >
+      <div class='mx-auto max-w-screen-lg'>
+        <div class='opacity-75 pb-10 text-lg tracking-wider items-center'></div>
+        <Image
+          src={image.data.src}
+          alt={image.data.alt}
+          width='1000'
+          height='1000'
+        />
+        <div id={image.data.title} class='text-base font-thin text-center pt-5'>
+          <p>{image.data.title}</p>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
