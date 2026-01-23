@@ -10,7 +10,16 @@ const { frontmatter, id } = Astro.props;
   title={frontmatter.data.title}
   description={frontmatter.data.description}
 >
-  <div class='pb-10'>
-    <SingleImage image={frontmatter} id={id} frontmatter={frontmatter} />
-  </div>
+  <section class='animate'>
+    <div class='relative bg-backlight dark:bg-backdark'>
+      <div
+        class='mx-auto max-w-screen-lg mt-14 flex flex-wrap justify-center p-5'
+      >
+        <SingleImage image={frontmatter} id={id} frontmatter={frontmatter} />
+        <div id={frontmatter.data.title} class='font-thin text-center'>
+          <p>{frontmatter.data.title}</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </PageLayout>

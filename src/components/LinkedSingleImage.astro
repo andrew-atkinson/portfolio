@@ -1,0 +1,15 @@
+---
+import { getEntry } from "astro:content";
+import SingleImage from "@components/SingleImage.astro";
+
+const { frontmatter, id } = Astro.props;
+const image: any = await getEntry("images", id.toLowerCase() as any);
+
+console.log("frontmatter, id from LinkedSingleImage.astro: ", frontmatter, id);
+---
+
+<a href={"/images/" + id.toLowerCase()}>
+  <div class='bg-slate-500/20 p-5'>
+    <SingleImage image={image} id={id} frontmatter={frontmatter} />
+  </div>
+</a>

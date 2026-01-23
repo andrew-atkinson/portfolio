@@ -7,19 +7,11 @@ const image: any = await getEntry("images", id.toLowerCase() as any);
 ---
 
 <section class='animate'>
-  <div
-    class='relative bg-backlight dark:bg-backdark flex flex-wrap justify-center bg-slate-500/20'
-  >
-    <div class='px-5 mt-1'>
-      <Image
-        src={image.data.src}
-        alt={image.data.alt}
-        width='1000'
-        height='1000'
-      />
-      <div id={image.data.title} class='font-thin text-center'>
-        <p>{image.data.title}</p>
-      </div>
-    </div>
-  </div>
+  <Image
+    src={image.data.src}
+    alt={image.data.alt}
+    width='1000'
+    height='1000'
+    class='p-0'
+  />
 </section>
