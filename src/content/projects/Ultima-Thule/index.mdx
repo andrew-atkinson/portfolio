@@ -1,0 +1,36 @@
+---
+title: "Ultima Thule"
+summary: "A photographic exploration of Iceland"
+date: "Mar 15 2022"
+draft: false
+tags:
+  - Grimsey
+  - Storhofdi
+series:
+  - Grimsey
+  - Storhofdi
+panoramas:
+  - esja
+thumbnail: "thingvellir-1.webp"
+---
+
+import LinkedImageRow from "@components/LinkedImageRow.astro";
+import LinkedSingleImage from "@components/LinkedSingleImage.astro";
+import { Content as GrimseyText } from "../../series/grimsey.md";
+import { Content as StorhofdiText } from "../../series/storhofdi.md";
+
+<LinkedSingleImage id="thingvellir-1" />
+
+The explorer Pytheas of Massalia first coined the term _Thule_ in the 4th century BC to describe a distant land located beyond the borders of the known world, which he claimed to have visited, but others doubted. He was also the first to describe the [midnight sun](../series/storhofdi), [arctic circle](../series/grimsey) and sea ice. In more recent times, _Ultima Thule_ has come to represent the farthest point of exploration and discovery. The project is a photographic exploration of the remote and rugged landscape of Iceland.
+
+<LinkedImageRow seriesName={frontmatter.series[0]} />
+<GrimseyText />
+
+<LinkedImageRow seriesName={frontmatter.series[1]} />
+<StorhofdiText />
+
+<LinkedImageRow
+  seriesName={frontmatter.panoramas[0]}
+  seriesType="panoramas"
+  gap="0"
+/>
