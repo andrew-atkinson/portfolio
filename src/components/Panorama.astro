@@ -1,7 +1,7 @@
 ---
 import "keen-slider/keen-slider.min.css";
 import { Image } from "astro:assets";
-const { images, initialIndex, frontmatter } = Astro.props;
+const { images, initialIndex, title } = Astro.props;
 ---
 
 <style is:global>
@@ -20,21 +20,6 @@ const { images, initialIndex, frontmatter } = Astro.props;
     padding-bottom: 0px;
   }
 
-  .opaque {
-    opacity: 100%;
-    transition: opacity 0.75s ease-in-out;
-  }
-
-  .dimmed {
-    opacity: 30%;
-    transition: opacity 0.5s ease-in-out;
-  }
-
-  .transparent {
-    opacity: 0%;
-    transition: opacity 0.1s ease-in-out;
-  }
-
   .navigation-wrapper {
     position: relative;
     display: flex;
@@ -45,43 +30,10 @@ const { images, initialIndex, frontmatter } = Astro.props;
   .keen-slider {
     flex: 1;
     max-width: 100vh;
+    min-width: 50vh;
     max-height: 100vh;
     object-fit: contain;
     align-self: center;
-  }
-
-  .dots {
-    display: flex;
-    padding: 10px 0;
-    justify-content: center;
-    align-items: center;
-    height: 60px;
-    gap: 5px;
-  }
-
-  .dot {
-    border: none;
-    width: 10px;
-    height: 10px;
-    background: #888;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .dot:focus {
-    display: flex;
-    outline: none;
-  }
-
-  .dot--active {
-    display: flex;
-    background: #fff;
-    height: 13px;
-    width: 13px;
   }
 
   .arrow {
@@ -131,13 +83,11 @@ const { images, initialIndex, frontmatter } = Astro.props;
 
   function navigation(slider: any) {
     let wrapper: ChildNode,
-      dots: HTMLDivElement,
       arrowLeft: HTMLDivElement,
       arrowRight: HTMLDivElement;
 
     function markup(remove: boolean) {
       wrapperMarkup(remove);
-      dotMarkup(remove);
       arrowMarkup(remove);
     }
 
@@ -185,20 +135,6 @@ const { images, initialIndex, frontmatter } = Astro.props;
       wrapper.appendChild(slider.container);
     }
 
-    function dotMarkup(remove: boolean) {
-      if (remove) {
-        removeElement(dots);
-        return;
-      }
-      dots = createDiv("dots");
-      slider.track.details.slides.forEach((_e: any, idx: number) => {
-        var dot = createDiv("dot");
-        dot.addEventListener("click", () => slider.moveToIdx(idx));
-        dots.appendChild(dot);
-      });
-      wrapper.appendChild(dots);
-    }
-
     function updateClasses() {
       let slide = slider.track.details.rel;
       slide === 0
@@ -207,29 +143,10 @@ const { images, initialIndex, frontmatter } = Astro.props;
       slide === slider.track.details.slides.length - 1
         ? arrowRight.classList.add("arrow--disabled")
         : arrowRight.classList.remove("arrow--disabled");
-      Array.from(dots.children).forEach(function (dot, idx) {
-        idx === slide
-          ? dot.classList.add("dot--active")
-          : dot.classList.remove("dot--active");
-      });
 
       let currentElement = document.getElementById(
         `slide${slider.track.details.rel}`
       );
-
-      slider.slides.forEach((slide: HTMLDivElement) => {
-        if (slide && slide !== currentElement) {
-          slide.classList.add("dimmed");
-          slide.classList.remove("opaque");
-          slide.children[1].classList.add("transparent");
-          slide.children[1].classList.remove("opaque");
-        } else {
-          slide.classList.remove("dimmed");
-          slide.classList.add("opaque");
-          slide.children[1].classList.remove("transparent");
-          slide.children[1].classList.add("opaque");
-        }
-      });
     }
 
     slider.on("created", () => {
@@ -258,11 +175,11 @@ const { images, initialIndex, frontmatter } = Astro.props;
     "#my-keen-slider",
     {
       initial: initialIndex,
-      loop: true,
+      loop: false,
       slides: {
         origin: "center",
-        perView: 1.4,
-        spacing: 10,
+        perView: 1.5,
+        spacing: 0,
       },
     },
     [navigation]
@@ -341,41 +258,34 @@ const { images, initialIndex, frontmatter } = Astro.props;
 <section class='animate'>
   <div class='relative bg-backlight dark:bg-backdark'>
     <div
-      class='p-5 mx-auto max-w-screen-lg opacity-75 text-lg tracking-wider text-center mt-14'
+      class='p-5 mx-auto max-w-screen-lg mt-14 flex flex-wrap justify-center'
     >
-      {frontmatter.title}
-    </div>
-    <div class='mx-auto max-w-screen-lg'></div>
-    <div class='carousel-container' data-initial-index={initialIndex}>
-      <div id='my-keen-slider' class='keen-slider'>
-        {
-          images.map((image: any, index: number) => (
-            <div>
-              <a target='_blank' style='text-decoration: none'>
-                {
-                  <div
-                    style='display:flex; flex-direction: column; align-items: center;'
-                    id={`slide${index}`}
-                    class={`keen-slider__slide number-slide${index}`}
-                  >
-                    <Image
-                      src={image.data.src}
-                      alt={image.data.title}
-                      width={1000}
-                      height={1000}
-                    />
+      <div class='opacity-75 pb-5 text-lg tracking-wider'>{title}</div>
+      <div class='carousel-container' data-initial-index={initialIndex}>
+        <div id='my-keen-slider' class='keen-slider'>
+          {
+            images.map((image: any, index: number) => (
+              <div>
+                <a target='_blank' style='text-decoration: none'>
+                  {
                     <div
-                      id={`description${index}`}
-                      class='text-base font-thin text-center'
+                      style='display:flex; flex-direction: column; align-items: center;'
+                      id={`slide${index}`}
+                      class={`keen-slider__slide number-slide${index}`}
                     >
-                      <p>{image.data.title}</p>
+                      <Image
+                        src={image.data.src}
+                        alt={image.data.title}
+                        width={1000}
+                        height={700}
+                      />
                     </div>
-                  </div>
-                }
-              </a>
-            </div>
-          ))
-        }
+                  }
+                </a>
+              </div>
+            ))
+          }
+        </div>
       </div>
     </div>
   </div>

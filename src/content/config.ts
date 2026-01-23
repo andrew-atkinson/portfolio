@@ -1,5 +1,4 @@
 import { defineCollection, z, reference } from "astro:content";
-import { glob } from "astro/loaders";
 
 const about = defineCollection({
   type: "content",
@@ -16,6 +15,7 @@ const blog = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()),
     draft: z.boolean().optional(),
+    thumbnail: z.string().optional(),
   }),
 });
 
@@ -50,21 +50,37 @@ const series = defineCollection({
     project: z.string().optional(),
     id: z.string().optional(),
     initialIndex: z.number().optional(),
+    thumbnail: z.string().optional(),
+  }),
+});
+
+const panoramas = defineCollection({
+  type: "content",
+  schema: z.object({
+    layout: z.string().optional(),
+    title: z.string(),
+    pieces: z.array(reference("images")),
+    project: z.string().optional(),
+    id: z.string().optional(),
+    initialIndex: z.number().optional(),
+    thumbnail: z.string().optional(),
   }),
 });
 
 const projects = defineCollection({
   type: "content",
-  schema: z.object({
-    title: z.string(),
-    summary: z.string(),
-    date: z.coerce.date(),
-    tags: z.array(z.string()),
-    draft: z.boolean().optional(),
-    demoUrl: z.string().optional(),
-    repoUrl: z.string().optional(),
-    // series: z.array(series).optional(),
-  }),
+  schema: () =>
+    z.object({
+      title: z.string(),
+      summary: z.string(),
+      date: z.coerce.date(),
+      tags: z.array(z.string()),
+      draft: z.boolean().optional(),
+      demoUrl: z.string().optional(),
+      repoUrl: z.string().optional(),
+      series: z.array(reference("series")).optional(),
+      thumbnail: z.string().optional(),
+    }),
 });
 
 const legal = defineCollection({
@@ -83,4 +99,5 @@ export const collections = {
   series,
   pieces,
   images,
+  panoramas,
 };

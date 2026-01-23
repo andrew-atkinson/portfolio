@@ -1,0 +1,19 @@
+---
+import SingleImageLayout from "@layouts/SingleImageLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const images = await getCollection("images");
+  let imageArr = images.map((image) => ({
+    params: { slug: image.slug },
+    props: { frontmatter: image },
+  }));
+
+  return imageArr;
+}
+
+const { slug } = Astro.params;
+const { frontmatter } = Astro.props;
+---
+
+<SingleImageLayout id={slug} frontmatter={frontmatter} />

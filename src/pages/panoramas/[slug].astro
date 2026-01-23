@@ -1,0 +1,30 @@
+---
+import PanoramaSeriesPageLayout from "@layouts/PanoramaSeriesPageLayout.astro";
+
+export async function getStaticPaths() {
+  const allPanoramas = Object.values(
+    import.meta.glob("../../content/panoramas/*.md", { eager: true })
+  );
+
+  return allPanoramas.map((panorama: any) => {
+    return {
+      params: {
+        slug: panorama.frontmatter.id,
+      },
+      props: {
+        frontmatter: panorama.frontmatter,
+      },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const { frontmatter } = Astro.props;
+---
+
+<PanoramaSeriesPageLayout
+  id={slug}
+  frontmatter={frontmatter}
+  gap='0'
+  seriesType='panoramas'
+/>

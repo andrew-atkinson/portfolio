@@ -1,0 +1,25 @@
+---
+import "@styles/global.css";
+import SingleImage from "@components/SingleImage.astro";
+import PageLayout from "@layouts/PageLayout.astro";
+
+const { frontmatter, id } = Astro.props;
+---
+
+<PageLayout
+  title={frontmatter.data.title}
+  description={frontmatter.data.description}
+>
+  <section class='animate'>
+    <div class='relative bg-backlight dark:bg-backdark'>
+      <div
+        class='mx-auto max-w-screen-lg mt-14 flex flex-wrap justify-center p-5'
+      >
+        <SingleImage image={frontmatter} id={id} frontmatter={frontmatter} />
+        <div id={frontmatter.data.title} class='font-thin text-center'>
+          <p>{frontmatter.data.title}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>

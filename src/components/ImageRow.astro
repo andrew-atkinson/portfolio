@@ -1,27 +1,26 @@
 ---
 import { Image } from "astro:assets";
-const { images } = Astro.props;
+let { images, gap = "2" } = Astro.props;
 ---
 
 <section class='animate'>
-  <div class='bg-backlight dark:bg-backdark'>
-    <div class='mx-auto max-w-screen-lg pb-8 p-4'>
-      <div class='flex flex-wrap justify-center gap-2'>
-        {
-          images.map((image: any, index: number) => (
-            <div
-              class='flex-shrink-0 max-h-100px'
-              style={`width: min(calc((100% - ${images.length - 1} * 1rem) / ${images.length}), 200px);`}
-            >
-              <Image
-                src={image.data.src}
-                alt={image.data.alt}
-                class='w-full h-auto object-contain'
-              />
-            </div>
-          ))
-        }
-      </div>
-    </div>
+  <div class={"flex flex-wrap justify-center w-full gap-" + gap}>
+    {
+      images.map((image: any) => (
+        <div
+          class='flex-shrink-0 max-h-100px'
+          style={`width: min(calc((100% - ${images.length - 1} * 1rem) / ${images.length}), 200px);`}
+        >
+          <Image
+            src={image.data.src}
+            alt={image.data.alt}
+            class='w-full h-auto object-contain'
+            loading={"eager"}
+            width={500}
+            height={500}
+          />
+        </div>
+      ))
+    }
   </div>
 </section>
