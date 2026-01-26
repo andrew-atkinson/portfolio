@@ -16,8 +16,9 @@ const { frontmatter, id } = Astro.props;
         class='mx-auto max-w-screen-lg mt-14 flex flex-wrap justify-center p-5'
       >
         <SingleImage image={frontmatter} id={id} frontmatter={frontmatter} />
-        <div id={frontmatter.data.title} class='font-thin text-center'>
+        <div id={frontmatter.data.title} class='font-thin text-center mt-5'>
           <p>{frontmatter.data.title}</p>
+          <p>{frontmatter.data.description}</p>
         </div>
       </div>
     </div>

@@ -5,7 +5,6 @@ import TopLayout from "@layouts/TopLayout.astro";
 import BottomLayout from "@layouts/BottomLayout.astro";
 import SearchCollection from "@components/SearchCollection";
 import { PROJECTS } from "@consts";
-import type { CollectionEntry } from "astro:content";
 
 const projects = (await getCollection("projects"))
   .filter((project) => !project.data.draft)
@@ -21,19 +20,19 @@ const estimated_initial_size =
 
 <PageLayout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
   <TopLayout>
-    <div class="animate">
-      <h1 class="text-3xl font-semibold text-black dark:text-white mt-2">
+    <div class='animate'>
+      <h1 class='text-3xl font-semibold text-black dark:text-white mt-2'>
         {PROJECTS.TITLE}
       </h1>
-      <div class="mt-1">
+      <div class='mt-1'>
         {PROJECTS.DESCRIPTION}
       </div>
     </div>
   </TopLayout>
   <BottomLayout>
     <div
-      id="search-collection-wrapper"
-      class="animate"
+      id='search-collection-wrapper'
+      class='animate'
       style={{ minHeight: `${estimated_initial_size}px` }}
     >
       <SearchCollection
