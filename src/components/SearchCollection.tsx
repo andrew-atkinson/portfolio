@@ -24,7 +24,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
     []
   );
   const [descending, setDescending] = createSignal(false);
-  const [showControls, setShowControls] = createSignal(true);
+  const [getTagVisibility, setTagVisibility] = createSignal(true);
 
   const fuse = new Fuse(coerced, {
     keys: ["slug", "data.title", "data.summary", "data.tags", "data.project"],
@@ -71,7 +71,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
   };
 
   function toggleControls() {
-    setShowControls(!showControls());
+    setTagVisibility(!getTagVisibility());
   }
 
   onMount(() => {
@@ -89,12 +89,14 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
           onClick={toggleControls}
           class="text-sm font-semibold text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
         >
-          {showControls() ? "Show Filters" : "Hide Filters"}
+          {getTagVisibility() ? "Show Filters" : "Hide Filters"}
         </button>
       </div>
       <div class="grid grid-cols-1 gap-6">
         {/* Control Panel */}
-        <div class={cn("col-span-3 sm:col-span-1", showControls() && "hidden")}>
+        <div
+          class={cn("col-span-3 sm:col-span-1", getTagVisibility() && "hidden")}
+        >
           <div class="sticky top-24 mt-7">
             {/* Search Bar */}
             <SearchBar
@@ -165,7 +167,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
         <div
           class={cn(
             "col-span-3",
-            showControls() ? "sm:col-span-2" : "sm:col-span-3"
+            getTagVisibility() ? "sm:col-span-2" : "sm:col-span-3"
           )}
         >
           <div class="flex flex-col">
@@ -200,7 +202,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
                   <ArrowCard
                     entry={entry}
                     pill={true}
-                    showControls={showControls as () => boolean}
+                    getTagVisibility={getTagVisibility as () => boolean}
                   />
                 </li>
               ))}
