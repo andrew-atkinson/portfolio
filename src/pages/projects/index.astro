@@ -3,16 +3,14 @@ import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import TopLayout from "@layouts/TopLayout.astro";
 import BottomLayout from "@layouts/BottomLayout.astro";
-import SearchCollection from "@components/SearchCollection";
 import { PROJECTS } from "@consts";
+import ArrowCard from "@components/ArrowCard";
 
 const projects = (await getCollection("projects"))
   .filter((project) => !project.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const tags = [
-  ...new Set(projects.flatMap((project) => project.data.tags)),
-].sort((a, b) => a.localeCompare(b));
+const images = await getCollection("images");
 
 const estimated_initial_size =
   28 + projects.length * 158 + (projects.length - 1) * 12;
@@ -35,12 +33,27 @@ const estimated_initial_size =
       class='animate'
       style={{ minHeight: `${estimated_initial_size}px` }}
     >
-      <SearchCollection
-        client:load
-        entry_name={"projects"}
-        tags={tags}
-        data={projects}
-      />
+      <ul class='flex flex-col gap-3'>
+        {
+          projects.map((entry) => {
+            let thumbnail = images.filter(
+              (img) => img.slug === entry.data.thumbnail,
+            );
+            return (
+              <li>
+                <ArrowCard
+                  entry={entry}
+                  pill={true}
+                  getTagVisibility={() => true}
+                  image={
+                    thumbnail.length > 0 ? thumbnail[0].data.src.src : null
+                  }
+                />
+              </li>
+            );
+          })
+        }
+      </ul>
     </div>
   </BottomLayout>
 </PageLayout>
