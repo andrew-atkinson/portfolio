@@ -7,20 +7,22 @@ import Search from "@components/Search";
 import { SEARCH } from "@consts";
 
 const posts = (await getCollection("blog")).filter((post) => !post.data.draft);
-
 const projects = (await getCollection("projects")).filter(
   (post) => !post.data.draft,
 );
-
+const tags = [
+  ...new Set(projects.flatMap((project) => project.data.tags)),
+].sort((a, b) => a.localeCompare(b));
 const series = await getCollection("series");
-
 const panoramas = await getCollection("panoramas");
+const images = await getCollection("images");
 
 const data = [
   ...posts,
   ...projects,
   ...series,
   ...panoramas,
+  ...images,
 ] as CollectionEntry<"blog">[];
 ---
 
@@ -32,7 +34,7 @@ const data = [
   </TopLayout>
   <BottomLayout>
     <div class='animate'>
-      <Search client:load data={data} />
+      <Search client:load data={data} images={images} tags={tags} />
     </div>
   </BottomLayout>
 </PageLayout>

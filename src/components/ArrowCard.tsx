@@ -17,10 +17,16 @@ type Props = {
     | CollectionEntry<"panoramas">
     | CollectionEntry<"series">;
   pill?: boolean;
-  showControls: () => boolean;
+  getTagVisibility: () => boolean;
+  image?: string | null;
 };
 
-export default function ArrowCard({ entry, showControls, pill }: Props) {
+export default function ArrowCard({
+  entry,
+  getTagVisibility,
+  pill,
+  image,
+}: Props) {
   const entryData = entry.data as CommonEntryData;
 
   return (
@@ -28,13 +34,8 @@ export default function ArrowCard({ entry, showControls, pill }: Props) {
       href={`/${entry.collection}/${entry.slug}`}
       class="group p-4 gap-3 flex border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out items-center"
     >
-      {entryData?.thumbnail ? (
-        <img
-          src={`../src/assets/${entryData.thumbnail}`}
-          alt={entryData.thumbnail}
-          width={100}
-          height={100}
-        />
+      {image ? (
+        <img src={image} alt={entryData.thumbnail} width={100} height={100} />
       ) : null}
       <div class="w-full group-hover:text-black group-hover:dark:text-white blend">
         <div class="text-black dark:text-white line-clamp-2">
@@ -53,7 +54,12 @@ export default function ArrowCard({ entry, showControls, pill }: Props) {
             entryData?.project ||
             "No description available."}
         </div>
-        <ul class={cn("flex flex-wrap mt-2 gap-1", showControls() && "hidden")}>
+        <ul
+          class={cn(
+            "flex flex-wrap mt-2 gap-1",
+            getTagVisibility() && "hidden"
+          )}
+        >
           {entryData?.tags &&
             entryData.tags.map((tag: string) => (
               <li class="text-xs uppercase py-0.5 px-2 rounded bg-black/5 dark:bg-white/20 text-black/75 dark:text-white/75">
