@@ -17,7 +17,7 @@ export const ABOUT: Page = {
 // Projects Page
 export const PROJECTS: Page = {
   TITLE: "Projects",
-  DESCRIPTION: "Recent projects",
+  DESCRIPTION: "Projects, series and other works",
 };
 
 // Search Page
