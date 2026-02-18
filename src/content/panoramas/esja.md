@@ -8,7 +8,7 @@ pieces:
   - esja-5
 project: "Ultima Thule"
 id: "esja"
-thumbnail: "esja-5.png"
+thumbnail: "esja-4"
 ---
 
 Þverfellshorn peak with views of other parts of Esja, and Mosfellsbær and Reykjavík.
