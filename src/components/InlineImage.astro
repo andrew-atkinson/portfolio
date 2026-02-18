@@ -1,0 +1,39 @@
+---
+import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
+
+const { id, position } = Astro.props;
+const image: any = await getEntry("images", id.toLowerCase() as string);
+---
+
+<div class='inline-image-container w-full'>
+  <div
+    class={`inline-image-wrapper ${position === "left" ? "float-left mr-4" : "float-right ml-4"} w-1/3 max-w-[300px] bg-slate-500/20 px-3`}
+  >
+    <a href={"/images/" + id.toLowerCase()}>
+      <Image
+        src={image.data.src}
+        alt={image.data.alt}
+        title={image?.data.title}
+        class='w-full h-auto'
+        width='300'
+        height='300'
+      />
+    </a>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 500px) {
+    .inline-image-wrapper {
+      float: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    .inline-image-container {
+      display: block;
+      width: 100%;
+    }
+  }
+</style>
