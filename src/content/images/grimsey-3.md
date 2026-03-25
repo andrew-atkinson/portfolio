@@ -1,5 +1,5 @@
 ---
-title: "Grímsey facing north | 7/13/11 | "
+title: "Grímsey facing north | 7/13/11"
 date: "7/19/2011"
 time: "17:00"
 description: "Grímsey facing north into the Arctic Circle | 7/13/11 | 66°33ʹ50″N 18º1ʹ12″W"
