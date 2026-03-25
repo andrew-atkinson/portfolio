@@ -6,11 +6,13 @@ draft: false
 tags:
   - Grimsey
   - Storhofdi
+  - Krafla
 series:
   - Grimsey
   - Storhofdi
+  - Krafla
 panoramas:
-  - esja
+  - Esja
 thumbnail: "thingvellir-1"
 ---
 
@@ -18,29 +20,8 @@ import LinkedImageRow from "@components/LinkedImageRow.astro";
 import LinkedSingleImage from "@components/LinkedSingleImage.astro";
 import { Content as GrimseyText } from "../../series/grimsey.md";
 import { Content as StorhofdiText } from "../../series/storhofdi.md";
+import { Content as KraflaText } from "../../series/krafla.md";
 import InlineImage from "@components/InlineImage.astro";
-
-<LinkedSingleImage id="thingvellir-1" />
-
-This project draws from the ancient idea of _Ultima Thule_, a place imagined at the limits of the known world. Iceland is one of the islands often regarded as _Thule_. Iceland is approached here not as a boundary, nor a frozen and static land, but as an active site of emergence, where geological, ecological, and social processes intersect.
-
-The images focus on lines—faults, fissures, flows, and infrastructures—traced across the landscape. These are the visible record of the ongoing processes.
-
-Iceland sits astride the Mid-Atlantic Ridge, where tectonic plates diverge, and the earth continuously rewrites its own surface. In places like Þingvellir, this separation is both geological and historical: a rift valley that also hosted one of the world’s earliest parliamentary assemblies. Division becomes a site for gathering.
-
-<InlineImage id="thingvellir-1" position="right" />
-
-Drawing on ideas of vital materialism, the work considers the land not as passive matter but as active, processual, and generative. Lava cools into rock, steam vents into the atmosphere, and new land emerges, as with Surtsey. These processes operate across vastly different timescales, yet remain perceptible—at times immediate—within human experience.
-
-At the same time, human systems are embedded within and shaped by these forces. Geothermal infrastructures near sites such as Krafla Caldera channel subterranean heat, while urban and commercial spaces compress global networks into a small and sparsely populated environment. Iceland becomes a site where multiple systems—geological, political, economic—are intensified and made visible.
-
-Rather than presenting landscape as static or sublime, this body of work frames it as ongoing: a series of processes unfolding. The photographs attend to moments where boundaries are drawn and undone, where stability gives way to transformation, and where the ground itself is not fixed, but continually in the act of becoming.
-
-<LinkedImageRow seriesName={frontmatter.series[0]} />
-<GrimseyText />
-
-<LinkedImageRow seriesName={frontmatter.series[1]} />
-<StorhofdiText />
 
 <LinkedImageRow
   seriesName={frontmatter.panoramas[0]}
@@ -48,6 +29,35 @@ Rather than presenting landscape as static or sublime, this body of work frames 
   gap="0"
 />
 
-### Ultima Thule
+This project draws from the ancient idea of _Ultima Thule_, a place imagined at the limits of the known world. Iceland is one of the islands historically regarded as _Thule_. Iceland is approached here not as a frozen and static land, but as an active site of emergence, where geological, ecological, and social processes intersect. The images focus on lines—faults, fissures, flows, and infrastructures traced across the landscape, looking for instances where _materiality_ reveals that it is a firstly an _event_. These images are the visual testimony of the world as an ongoing process.
+
+Drawing on ideas of vital materialism, the work considers the land not as passive matter but as active, processual, and generative. Lava cools into rock, steam vents into the atmosphere, and occasionally new land emerges, as with Surtsey. These processes operate across vastly different timescales, yet remain perceptible—at times immediate—within human experience.
+
+At the same time, human systems are embedded within and shaped by these forces. Geothermal infrastructures near sites such as Krafla Caldera channel subterranean heat, while urban and commercial spaces compress global networks into a small and sparsely populated environment. Iceland becomes a site where multiple systems—geological, political, economic—are intensified and made visible.
+
+Rather than presenting landscape as static or sublime, this body of work frames it as ongoing: a series of processes unfolding. The photographs attend to moments where boundaries are drawn and undone, where stability gives way to transformation, and where the ground itself is not fixed, but continually in the act of becoming.
+
+## Þingvellir
+
+<InlineImage id="thingvellir-1" position="right" />
+
+Iceland sits astride the Mid-Atlantic Ridge, where tectonic plates diverge and the earth adjusts its own surface. In places like Þingvellir, this separation is both geological and historical: a rift valley that also hosted one of the world's earliest parliamentary assemblies. Division becomes a site for gathering. Þingvellir is part of the same separate as Krafla to the north and Keflavík to the southwest.
+
+## Krafla
+
+<LinkedImageRow seriesName={frontmatter.series[2]} />
+<KraflaText />
+
+## Grímsey
+
+<LinkedImageRow seriesName={frontmatter.series[0]} />
+<GrimseyText />
+
+## 24 hours around Stórhöfði
+
+<LinkedImageRow seriesName={frontmatter.series[1]} />
+<StorhofdiText />
+
+## Ultima Thule
 
 The explorer Pytheas of Massalia first coined the term _Thule_ in the 4th century BC to describe a distant land located beyond the borders of the known world, which he claimed to have visited, but others doubted. He was also the first to describe the [midnight sun](../series/storhofdi), [arctic circle](../series/grimsey) and sea ice. In more recent times, _Ultima Thule_ has come to represent the farthest point of exploration and discovery.
