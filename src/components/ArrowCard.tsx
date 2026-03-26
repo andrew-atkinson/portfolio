@@ -21,6 +21,21 @@ type Props = {
   image?: string | null;
 };
 
+function truncateProjectType(text: string): string {
+  switch (text) {
+    case "projects":
+      return "project";
+    case "series":
+      return "series";
+    case "panoramas":
+      return "panorama";
+    case "images":
+      return "image";
+    default:
+      return "work";
+  }
+}
+
 export default function ArrowCard({
   entry,
   getTagVisibility,
@@ -41,7 +56,7 @@ export default function ArrowCard({
         <div class="text-black dark:text-white line-clamp-2">
           {pill && (
             <div class="w-min text-sm capitalize border-black/15 dark:border-white/25 opacity-60">
-              {entry.collection}
+              {truncateProjectType(entry.collection)}
             </div>
           )}
           <div class="items-center py-0.5 font-semibold text-black dark:text-white line-clamp-2">
