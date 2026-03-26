@@ -2,6 +2,8 @@
 import "keen-slider/keen-slider.min.css";
 import { Image } from "astro:assets";
 const { images, initialIndex, frontmatter } = Astro.props;
+
+const loops = frontmatter.loops || false;
 ---
 
 <style is:global>
@@ -101,22 +103,22 @@ const { images, initialIndex, frontmatter } = Astro.props;
 
   .arrow--left {
     left: 5px;
-    fill: "#fff";
-    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg'  stroke='grey' fill-opacity='0.5' viewBox='0 0 24 24' %3E%3Cpath d='M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z' %3E%3C/path%3E%3C/svg%3E");
+    right: auto;
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg'  stroke='grey' fill-opacity='1' viewBox='0 0 24 24' %3E%3Cpath d='M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z' %3E%3C/path%3E%3C/svg%3E");
   }
 
   .arrow--right {
-    left: auto;
     right: 5px;
-    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg'  stroke='grey' fill-opacity='0.5' viewBox='0 0 24 24' %3E%3Cpath d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'%3E%3C/path%3E%3C/svg%3E");
+    left: auto;
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg'  stroke='grey' fill-opacity='1' viewBox='0 0 24 24' %3E%3Cpath d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'%3E%3C/path%3E%3C/svg%3E");
   }
 
   .arrow--disabled.arrow--left {
-    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' fill-opacity='0.5' stroke='darkgray' viewBox='0 0 24 24' %3E%3Cpath d='M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z' %3E%3C/path%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' fill-opacity='.5' stroke='darkgray' stroke-opacity='0.25' viewBox='0 0 24 24' %3E%3Cpath d='M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z' %3E%3C/path%3E%3C/svg%3E");
   }
 
   .arrow--disabled.arrow--right {
-    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' fill-opacity='0.5' stroke='darkgray' viewBox='0 0 24 24' %3E%3Cpath d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'%3E%3C/path%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' fill-opacity='.5' stroke='darkgray' stroke-opacity='0.25' viewBox='0 0 24 24' %3E%3Cpath d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'%3E%3C/path%3E%3C/svg%3E");
   }
 
   .carousel-container {
@@ -201,12 +203,19 @@ const { images, initialIndex, frontmatter } = Astro.props;
 
     function updateClasses() {
       let slide = slider.track.details.rel;
-      slide === 0
-        ? arrowLeft.classList.add("arrow--disabled")
-        : arrowLeft.classList.remove("arrow--disabled");
-      slide === slider.track.details.slides.length - 1
-        ? arrowRight.classList.add("arrow--disabled")
-        : arrowRight.classList.remove("arrow--disabled");
+      if (slide === 0 && loops === false) {
+        arrowLeft.classList.add("arrow--disabled");
+      } else if (
+        slide === slider.track.details.slides.length - 1 &&
+        loops === false
+      ) {
+        arrowRight.classList.add("arrow--disabled");
+      } else {
+        arrowLeft.classList.remove("arrow--disabled");
+        arrowRight.classList.remove("arrow--disabled");
+        arrowLeft.classList.add("arrow--left");
+        arrowRight.classList.add("arrow--right");
+      }
       Array.from(dots.children).forEach(function (dot, idx) {
         idx === slide
           ? dot.classList.add("dot--active")
@@ -214,7 +223,7 @@ const { images, initialIndex, frontmatter } = Astro.props;
       });
 
       let currentElement = document.getElementById(
-        `slide${slider.track.details.rel}`
+        `slide${slider.track.details.rel}`,
       );
 
       slider.slides.forEach((slide: HTMLDivElement) => {
@@ -254,18 +263,22 @@ const { images, initialIndex, frontmatter } = Astro.props;
     ? Number((_containerForInitial as HTMLElement).dataset.initialIndex)
     : 0;
 
+  const loops = _containerForInitial
+    ? (_containerForInitial as HTMLElement).dataset.loops === "true"
+    : false;
+
   let slider = new KeenSlider(
     "#my-keen-slider",
     {
       initial: initialIndex,
-      loop: true,
+      loop: loops,
       slides: {
         origin: "center",
         perView: 1.4,
         spacing: 10,
       },
     },
-    [navigation]
+    [navigation],
   );
 
   // Scoped keyboard navigation: active only when hovered OR focused (accessibility)
@@ -346,7 +359,11 @@ const { images, initialIndex, frontmatter } = Astro.props;
       {frontmatter.title}
     </div>
     <div class='mx-auto max-w-screen-lg'></div>
-    <div class='carousel-container' data-initial-index={initialIndex}>
+    <div
+      class='carousel-container'
+      data-initial-index={initialIndex}
+      data-loops={loops}
+    >
       <div id='my-keen-slider' class='keen-slider'>
         {
           images.map((image: any, index: number) => (

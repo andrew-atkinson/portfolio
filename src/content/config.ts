@@ -51,6 +51,7 @@ const series = defineCollection({
     id: z.string().optional(),
     initialIndex: z.number().optional(),
     thumbnail: z.string().optional(),
+    loops: z.boolean().default(false),
   }),
 });
 
@@ -64,6 +65,7 @@ const panoramas = defineCollection({
     id: z.string().optional(),
     initialIndex: z.number().optional(),
     thumbnail: z.string().optional(),
+    loops: z.boolean().default(false),
   }),
 });
 
