@@ -132,7 +132,10 @@ const stack = [
           <ul class="space-y-4">
             {posts.map((post) => (
               <li>
-                <ArrowCard entry={post} />
+                <ArrowCard entry={post} pill={true}
+                  getTagVisibility={() => true}
+                  image={null} 
+                  />
               </li>
             ))}
           </ul>
@@ -181,7 +184,10 @@ const stack = [
           <ul class="space-y-4">
             {projects.map((project) => (
               <li>
-                <ArrowCard entry={project} />
+                <ArrowCard entry={project} 
+                  pill={true}
+                  getTagVisibility={() => true}
+                  image={null} />
               </li>
             ))}
           </ul>
@@ -217,3 +223,4 @@ const stack = [
     </div>
   </div>
 </PageLayout>
+
