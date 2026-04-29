@@ -45,6 +45,7 @@ const series = defineCollection({
   type: "content",
   schema: z.object({
     layout: z.string().optional(),
+    view: z.string().optional(),
     title: z.string(),
     pieces: z.array(reference("images")),
     project: z.string().optional(),

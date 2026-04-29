@@ -1,0 +1,18 @@
+---
+import "@styles/global.css";
+import PageLayout from "./PageLayout.astro";
+import ImageGrid from "@components/ImageGrid.astro";
+import TextContent from "@components/TextContent.astro";
+import { getEntries, getEntry } from "astro:content";
+
+const { frontmatter, id } = Astro.props;
+const series: any = await getEntry("series", id);
+const pieces = await getEntries(series.data.pieces);
+---
+
+<PageLayout title={frontmatter.title} description={frontmatter.description}>
+  <div class="pb-10">
+    <ImageGrid images={pieces} title={frontmatter.title} />
+    <TextContent content={series} />
+  </div>
+</PageLayout>

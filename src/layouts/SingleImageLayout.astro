@@ -13,7 +13,7 @@ const { frontmatter, id } = Astro.props;
   <section class='animate'>
     <div class='relative bg-backlight dark:bg-backdark'>
       <div
-        class='mx-auto max-w-screen-lg mt-14 flex flex-wrap justify-center p-5'
+        class='mx-auto max-w-screen-lg mt-14 flex flex-col items-center px-5 pb-10'
       >
         <SingleImage image={frontmatter} id={id} frontmatter={frontmatter} />
         <div id={frontmatter.data.title} class='font-thin text-center mt-5'>

@@ -1,5 +1,6 @@
 ---
 title: "Grid Dirt Glass"
+view: "grid"
 pieces:
   - grid_dirt_glass_1
   - grid_dirt_glass_2
