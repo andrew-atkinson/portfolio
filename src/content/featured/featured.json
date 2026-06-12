@@ -1,0 +1,26 @@
+[
+  {
+    "type": "image",
+    "title": "Grímsey, facing east",
+    "image": "grimsey-2",
+    "link": { "collection": "series", "slug": "grimsey" }
+  },
+  {
+    "type": "image",
+    "title": "Krafla",
+    "image": "krafla-2",
+    "link": { "collection": "series", "slug": "krafla" }
+  },
+  {
+    "type": "image",
+    "title": "Stórhöfði, 12:30pm",
+    "image": "storhofdi-6",
+    "link": { "collection": "series", "slug": "storhofdi" }
+  },
+  {
+    "type": "image",
+    "title": "Grid Dirt Glass 4",
+    "image": "grid_dirt_glass_4",
+    "link": { "collection": "series", "slug": "grid_dirt_glass" }
+  }
+]
