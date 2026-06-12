@@ -6,12 +6,10 @@ const { id } = Astro.props;
 const image: any = await getEntry("images", id.toLowerCase() as any);
 ---
 
-<section class='animate'>
-  <Image
-    src={image.data.src}
-    alt={image.data.alt}
-    width='1000'
-    height='1000'
-    class='p-0'
-  />
-</section>
+<Image
+  src={image.data.src}
+  alt={image.data.alt}
+  width='1200'
+  height='1200'
+  class='max-w-full max-h-[calc(100vh-10rem)] w-auto h-auto object-contain'
+/>
