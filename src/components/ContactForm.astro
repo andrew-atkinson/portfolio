@@ -1,0 +1,115 @@
+---
+// Contact form powered by Netlify Forms.
+// Submissions are sent to the email configured for this site in the
+// Netlify dashboard (Site settings > Forms > Form notifications),
+// which should be set to mail@andrewatkinson.net.
+---
+
+<section id='contact' class='animate mt-8 pt-8'>
+  <p class='font-semibold text-black dark:text-white mt-4'>Send a message</p>
+  <p class='mt-4'>Use the form below and it'll come straight to my inbox.</p>
+
+  <form
+    name='contact'
+    method='POST'
+    data-netlify='true'
+    netlify-honeypot='bot-field'
+    class='mt-4 flex flex-col gap-4 max-w-lg'
+    id='contact-form'
+  >
+    <input type='hidden' name='form-name' value='contact' />
+    <p class='hidden'>
+      <label>
+        Don't fill this out if you're human: <input name='bot-field' />
+      </label>
+    </p>
+
+    <div class='flex flex-col gap-1'>
+      <label
+        for='contact-name'
+        class='text-sm font-medium text-black dark:text-white'
+      >
+        Name
+      </label>
+      <input
+        type='text'
+        name='name'
+        id='contact-name'
+        required
+        class='w-full rounded border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black/40 dark:focus:ring-white/40'
+      />
+    </div>
+
+    <div class='flex flex-col gap-1'>
+      <label
+        for='contact-email'
+        class='text-sm font-medium text-black dark:text-white'
+      >
+        Email
+      </label>
+      <input
+        type='email'
+        name='email'
+        id='contact-email'
+        required
+        class='w-full rounded border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black/40 dark:focus:ring-white/40'
+      />
+    </div>
+
+    <div class='flex flex-col gap-1'>
+      <label
+        for='contact-message'
+        class='text-sm font-medium text-black dark:text-white'
+      >
+        Message
+      </label>
+      <textarea
+        name='message'
+        id='contact-message'
+        rows='5'
+        required
+        class='w-full rounded border border-black/15 dark:border-white/20 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black/40 dark:focus:ring-white/40'
+      ></textarea>
+    </div>
+
+    <button
+      type='submit'
+      class='w-fit rounded border border-black/15 dark:border-white/20 px-4 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-300 ease-in-out'
+    >
+      Send
+    </button>
+
+    <p id='contact-form-status' class='text-sm' role='status'></p>
+  </form>
+</section>
+
+<script is:inline>
+  function initializeContactForm() {
+    const form = document.getElementById("contact-form");
+    if (!form || form.dataset.bound === "true") return;
+    form.dataset.bound = "true";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = document.getElementById("contact-form-status");
+      const data = new FormData(form);
+
+      try {
+        await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(data).toString(),
+        });
+        form.reset();
+        if (status) status.textContent = "Thanks! Your message has been sent.";
+      } catch (error) {
+        if (status)
+          status.textContent =
+            "Sorry, something went wrong. Please try emailing me directly.";
+      }
+    });
+  }
+
+  document.addEventListener("astro:after-swap", initializeContactForm);
+  initializeContactForm();
+</script>
