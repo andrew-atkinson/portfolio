@@ -22,4 +22,5 @@ pnpm-debug.log*
 
 # planning files
 CONTENT_PLAN.md
-PROGRESS.mdpnpm-lock.yaml
+PROGRESS.md
+pnpm-lock.yaml
