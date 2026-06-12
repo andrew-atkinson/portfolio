@@ -10,10 +10,10 @@ pieces:
   - grid_dirt_glass_6
   - grid_dirt_glass_7
   - grid_dirt_glass_8
-project: "Under the West Side Highway"
+project: "Not the West Side Highway"
 id: "grid_dirt_glass"
 initialIndex: 1
-thumbnail: "grid_dirt_glass_7"
+thumbnail: "grid_dirt_glass_4"
 ---
 
 These eight photographs were made with an obsolete rickety large-format scanning back. Each exposure takes between ten and thirty minutes, during which light shifts, trees move, and traffic passes through the frame; time sediments into the image rather than being arrested by it. The work troubles photography's foundational claim to the instantaneous, proposing instead something closer to what Roland Barthes called duration made visible, or what Vilém Flusser might recognize as the apparatus asserting itself against the intentions of its operator.

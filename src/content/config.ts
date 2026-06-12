@@ -82,6 +82,8 @@ const projects = defineCollection({
       demoUrl: z.string().optional(),
       repoUrl: z.string().optional(),
       series: z.array(reference("series")).optional(),
+      panoramas: z.array(reference("panoramas")).optional(),
+      images: z.array(reference("images")).optional(),
       thumbnail: z.string().optional(),
     }),
 });
