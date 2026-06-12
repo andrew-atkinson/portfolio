@@ -5,7 +5,7 @@ import Container from "@components/Container.astro";
 
 <footer class='relative bg-backlight dark:bg-backdark'>
   <div class='animate'>
-    <section class='py-5'>
+    <section id='back-to-top-section' class='py-5'>
       <Container size='md'>
         <div class='flex items-center justify-center'>
           <button
@@ -103,6 +103,14 @@ import Container from "@components/Container.astro";
     function initializeBackToTop() {
       const backToTop = document.getElementById("back-to-top");
       backToTop?.addEventListener("click", goBackToTop);
+
+      const section = document.getElementById("back-to-top-section");
+      if (section) {
+        const sectionCount = document.querySelectorAll(
+          "main section.animate"
+        ).length;
+        section.classList.toggle("hidden", sectionCount < 2);
+      }
     }
 
     document.addEventListener("astro:after-swap", initializeBackToTop);
