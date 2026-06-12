@@ -1,20 +1,19 @@
 ---
-import { getCollection } from "astro:content"
-import PageLayout from "@layouts/PageLayout.astro"
-import ArrowCard from "@components/ArrowCard"
-import FeaturedCarousel from "@components/FeaturedCarousel.astro"
-import { SITE } from "@consts"
-import TwinklingStars from "@components/TwinklingStars.astro"
-import MeteorShower from "@components/MeteorShower.astro"
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import ArrowCard from "@components/ArrowCard";
+import FeaturedCarousel from "@components/FeaturedCarousel.astro";
+import { SITE } from "@consts";
+import TwinklingStars from "@components/TwinklingStars.astro";
+import MeteorShower from "@components/MeteorShower.astro";
 
 const projects = (await getCollection("projects"))
-  .filter(project => !project.data.draft)
+  .filter((project) => !project.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0,3)
+  .slice(0, 3);
 ---
 
-<PageLayout title="Home" description={SITE.DESCRIPTION}>
-
+<PageLayout title='Home' description={SITE.DESCRIPTION}>
   <!-- Light Mode: Particles -->
   <div class='absolute inset-0 block dark:hidden'>
     <div id='particles1' class='fixed inset-0'></div>
@@ -30,55 +29,54 @@ const projects = (await getCollection("projects"))
   </div>
 
   <!-- Dark Theme: Twinkling Stars / Meteors -->
-  <div id="galaxy" class="fixed inset-0"> 
-     <div class="hidden dark:block">
-       <TwinklingStars/> 
-      <MeteorShower/>
+  <div id='galaxy' class='fixed inset-0'>
+    <div class='hidden dark:block'>
+      <TwinklingStars />
+      <MeteorShower />
     </div>
-</div>
+  </div>
 
-  <script is:inline src="/js/bg.js"></script>
+  <script is:inline src='/js/bg.js'></script>
 
-  <div class="relative bg-backlight dark:bg-backdark pt-24">
+  <div class='relative bg-backlight dark:bg-backdark pt-24'>
     <!-- Featured Works Carousel -->
     <FeaturedCarousel />
 
-    <div class="mx-auto max-w-screen-sm p-5 space-y-24 pb-16 pt-12">
-
-      <!-- About Section -->
-      <section class="animate">
-        <article>
-          <p>Andrew Atkinson is an artist and educator whose practice explores non-place, absurdity, and the immaterial through photography and digital media. His work investigates the empirical limits of photographic processes and the modeling potential of digital tools.</p>
-          <p>He holds a PhD on the digital recreation of the 19th-century Woodburytype photographic process, and has exhibited internationally, including in the Argentinian photo biennial and at MagnanMetz in Chelsea, New York.</p>
-        </article>
-      </section>
-
+    <div class='mx-auto max-w-screen-sm p-5 space-y-24 pb-16 pt-12'>
       <!-- Project Preview Section -->
-      <section class="animate">
-        <div class="space-y-4">
-          <div class="flex justify-between">
-            <p class="font-semibold text-black dark:text-white">
+      <section class='animate'>
+        <div class='space-y-4'>
+          <div class='flex justify-between'>
+            <p class='font-semibold text-black dark:text-white'>
               Recent projects
             </p>
-            <a href="/projects" class="w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
-              <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
+            <a
+              href='/projects'
+              class='w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend'
+            >
+              <span
+                class='text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend'
+              >
                 All projects
               </span>
             </a>
           </div>
-          <ul class="space-y-4">
-            {projects.map((project) => (
-              <li>
-                <ArrowCard entry={project} 
-                  pill={true}
-                  getTagVisibility={() => true}
-                  image={null} />
-              </li>
-            ))}
+          <ul class='space-y-4'>
+            {
+              projects.map((project) => (
+                <li>
+                  <ArrowCard
+                    entry={project}
+                    pill={true}
+                    getTagVisibility={() => true}
+                    image={null}
+                  />
+                </li>
+              ))
+            }
           </ul>
         </div>
       </section>
     </div>
   </div>
 </PageLayout>
-
