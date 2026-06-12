@@ -17,7 +17,7 @@ type Props = {
     | CollectionEntry<"panoramas">
     | CollectionEntry<"series">;
   pill?: boolean;
-  getTagVisibility: () => boolean;
+  getTagVisibility?: () => boolean;
   image?: string | null;
 };
 
@@ -72,7 +72,7 @@ export default function ArrowCard({
         <ul
           class={cn(
             "flex flex-wrap mt-2 gap-1",
-            getTagVisibility() && "hidden"
+            getTagVisibility?.() && "hidden"
           )}
         >
           {entryData?.tags &&
