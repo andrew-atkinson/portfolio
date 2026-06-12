@@ -1,5 +1,6 @@
 ---
 title: "Grid Dirt Glass"
+view: "grid"
 pieces:
   - grid_dirt_glass_1
   - grid_dirt_glass_2
@@ -11,7 +12,7 @@ pieces:
   - grid_dirt_glass_8
 project: "Not the West Side Highway"
 id: "grid_dirt_glass"
-initialIndex: 0
+initialIndex: 1
 thumbnail: "grid_dirt_glass_4"
 ---
 

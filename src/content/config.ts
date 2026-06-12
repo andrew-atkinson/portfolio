@@ -45,12 +45,14 @@ const series = defineCollection({
   type: "content",
   schema: z.object({
     layout: z.string().optional(),
+    view: z.string().optional(),
     title: z.string(),
     pieces: z.array(reference("images")),
     project: z.string().optional(),
     id: z.string().optional(),
     initialIndex: z.number().optional(),
     thumbnail: z.string().optional(),
+    loops: z.boolean().default(false),
   }),
 });
 
@@ -64,6 +66,7 @@ const panoramas = defineCollection({
     id: z.string().optional(),
     initialIndex: z.number().optional(),
     thumbnail: z.string().optional(),
+    loops: z.boolean().default(false),
   }),
 });
 
@@ -93,6 +96,47 @@ const legal = defineCollection({
   }),
 });
 
+// Featured works for the front-page carousel.
+// Each entry links to a project/series/panorama page and is one of:
+// image, video (hosted on Bunny Stream), or p5 sketch.
+//
+// All entries live in a single file, src/content/featured/featured.json,
+// as an array. Slide order follows array order.
+const linkTarget = z.object({
+  collection: z.enum(["projects", "series", "panoramas"]),
+  slug: z.string(),
+});
+
+const featured = defineCollection({
+  type: "data",
+  schema: ({ image }) =>
+    z.array(
+      z.discriminatedUnion("type", [
+        z.object({
+          type: z.literal("image"),
+          title: z.string(),
+          image: reference("images"),
+          link: linkTarget,
+        }),
+        z.object({
+          type: z.literal("video"),
+          title: z.string(),
+          videoId: z.string(),
+          libraryId: z.string().optional(),
+          poster: image().optional(),
+          link: linkTarget,
+        }),
+        z.object({
+          type: z.literal("p5"),
+          title: z.string(),
+          sketch: z.string(),
+          thumbnail: image().optional(),
+          link: linkTarget,
+        }),
+      ]),
+    ),
+});
+
 export const collections = {
   about,
   blog,
@@ -102,4 +146,5 @@ export const collections = {
   pieces,
   images,
   panoramas,
+  featured,
 };

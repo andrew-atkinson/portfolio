@@ -1,5 +1,6 @@
 ---
 import CarouselSeriesPageLayout from "@layouts/CarouselSeriesPageLayout.astro";
+import GridSeriesPageLayout from "@layouts/GridSeriesPageLayout.astro";
 
 export async function getStaticPaths() {
   const allSeries = Object.values(
@@ -22,4 +23,10 @@ const { slug } = Astro.params;
 const { frontmatter } = Astro.props;
 ---
 
-<CarouselSeriesPageLayout id={slug} frontmatter={frontmatter} />
+{
+  frontmatter.view === "grid" ? (
+    <GridSeriesPageLayout id={slug} frontmatter={frontmatter} />
+  ) : (
+    <CarouselSeriesPageLayout id={slug} frontmatter={frontmatter} />
+  )
+}

@@ -1,0 +1,321 @@
+---
+// Front-page carousel of featured works. src/content/featured/featured.json
+// is a single array; each entry points at an image, a Bunny-hosted video, or
+// a p5 sketch, and links through to the project/series/panorama it belongs
+// to. See src/content/featured/README.md.
+//
+// Mirrors the look/behavior of Carousel.astro (single slide at a time,
+// arrow + dot navigation, dimmed neighboring slides) but adapted for mixed
+// media types and outbound links instead of an internal lightbox.
+
+import "keen-slider/keen-slider.min.css";
+import { Image } from "astro:assets";
+import { getCollection, getEntry } from "astro:content";
+import BunnyVideo from "@components/BunnyVideo.astro";
+import P5Sketch from "@components/P5Sketch.astro";
+
+const entries = await getCollection("featured");
+const items = entries[0]?.data ?? [];
+
+const slides = await Promise.all(
+  items.map(async (item) => {
+    const href = `/${item.link.collection}/${item.link.slug}`;
+    let image = null;
+    if (item.type === "image") {
+      image = await getEntry("images", item.image.id);
+    }
+    return { item, href, image };
+  }),
+);
+---
+
+{slides.length > 0 && (
+  <section class="animate featured-carousel">
+    <div class="relative mx-auto w-full max-w-screen-lg px-5">
+      <div class="featured-carousel-container">
+        <div id="featured-keen-slider" class="keen-slider">
+          {slides.map(({ item, href, image }, index) => (
+            <div id={`featured-slide${index}`} class="keen-slider__slide featured-slide">
+              <a
+                href={href}
+                class="group flex flex-col items-center"
+                aria-label={item.title}
+              >
+                {item.type === "image" && image && (
+                  <Image
+                    src={image.data.src}
+                    alt={image.data.alt}
+                    title={item.title}
+                    class="max-h-[70vh] w-auto object-contain transition-opacity group-hover:opacity-90"
+                    width={1600}
+                    height={1600}
+                  />
+                )}
+
+                {item.type === "video" && (
+                  <BunnyVideo
+                    videoId={item.videoId}
+                    libraryId={item.libraryId}
+                    poster={item.poster}
+                    title={item.title}
+                    controls={false}
+                    autoplay={false}
+                    muted={true}
+                    loop={true}
+                    class="w-full max-h-[70vh] pointer-events-none"
+                  />
+                )}
+
+                {item.type === "p5" && (
+                  <P5Sketch
+                    sketch={item.sketch}
+                    title={item.title}
+                    class="aspect-video max-h-[70vh] pointer-events-none"
+                  />
+                )}
+
+                <p class="featured-caption mt-2 text-center text-sm font-thin">
+                  {item.title}
+                </p>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<style is:global>
+  .featured-carousel .navigation-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .featured-carousel .keen-slider {
+    flex: 1;
+  }
+
+  .featured-carousel .featured-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .featured-carousel .opaque {
+    opacity: 100%;
+    transition: opacity 0.75s ease-in-out;
+  }
+
+  .featured-carousel .dimmed {
+    opacity: 30%;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .featured-carousel .transparent {
+    opacity: 0%;
+    transition: opacity 0.1s ease-in-out;
+  }
+
+  .featured-carousel .dots {
+    display: flex;
+    padding: 10px 0;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    gap: 5px;
+  }
+
+  .featured-carousel .dot {
+    border: none;
+    width: 10px;
+    height: 10px;
+    background: #888;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .featured-carousel .dot:focus {
+    display: flex;
+    outline: none;
+  }
+
+  .featured-carousel .dot--active {
+    display: flex;
+    background: #fff;
+    height: 13px;
+    width: 13px;
+  }
+
+  .featured-carousel .featured-carousel-container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .featured-carousel .featured-caption {
+    color: rgb(0 0 0 / 0.75);
+  }
+
+  .dark .featured-carousel .featured-caption {
+    color: rgb(255 255 255 / 0.75);
+  }
+</style>
+
+<script>
+  import KeenSlider from "keen-slider";
+
+  function navigation(slider: any) {
+    let wrapper: ChildNode, dots: HTMLDivElement;
+
+    function removeElement(element: ChildNode) {
+      if (element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
+    }
+
+    function createDiv(className: string) {
+      const div = document.createElement("div");
+      className.split(" ").forEach((name) => div.classList.add(name));
+      return div;
+    }
+
+    function markup(remove: boolean) {
+      // wrapper
+      if (remove) {
+        const parent = wrapper?.parentNode;
+        while (wrapper?.firstChild) {
+          if (parent) parent.insertBefore(wrapper.firstChild, wrapper);
+        }
+        if (wrapper) removeElement(wrapper);
+      } else {
+        wrapper = createDiv("navigation-wrapper");
+        slider.container.parentNode.appendChild(wrapper);
+        wrapper.appendChild(slider.container);
+      }
+
+      // dots
+      if (remove) {
+        if (dots) removeElement(dots);
+      } else {
+        dots = createDiv("dots");
+        slider.track.details.slides.forEach((_e: any, idx: number) => {
+          const dot = createDiv("dot");
+          dot.addEventListener("click", () => slider.moveToIdx(idx));
+          dots.appendChild(dot);
+        });
+        wrapper.appendChild(dots);
+      }
+    }
+
+    function updateClasses() {
+      const slide = slider.track.details.rel;
+
+      Array.from(dots.children).forEach((dot, idx) => {
+        idx === slide
+          ? dot.classList.add("dot--active")
+          : dot.classList.remove("dot--active");
+      });
+
+      slider.slides.forEach((s: HTMLDivElement, idx: number) => {
+        if (idx !== slide) {
+          s.classList.add("dimmed");
+          s.classList.remove("opaque");
+        } else {
+          s.classList.remove("dimmed");
+          s.classList.add("opaque");
+        }
+      });
+    }
+
+    slider.on("created", () => {
+      markup(false);
+      updateClasses();
+    });
+    slider.on("optionsChanged", () => {
+      markup(true);
+      markup(false);
+      updateClasses();
+    });
+    slider.on("slideChanged", () => {
+      updateClasses();
+    });
+    slider.on("destroyed", () => {
+      markup(true);
+    });
+  }
+
+  // Auto-rotate slides, pausing while the carousel is hovered or focused.
+  function autoplay(slider: any) {
+    const intervalMs = 5000;
+    let timeout: ReturnType<typeof setTimeout>;
+    let paused = false;
+
+    function clear() {
+      clearTimeout(timeout);
+    }
+
+    function next() {
+      clear();
+      if (paused) return;
+      timeout = setTimeout(() => {
+        slider.next();
+      }, intervalMs);
+    }
+
+    slider.on("created", () => {
+      const container = slider.container as HTMLElement;
+      container.addEventListener("mouseenter", () => {
+        paused = true;
+        clear();
+      });
+      container.addEventListener("mouseleave", () => {
+        paused = false;
+        next();
+      });
+      container.addEventListener("focusin", () => {
+        paused = true;
+        clear();
+      });
+      container.addEventListener("focusout", () => {
+        paused = false;
+        next();
+      });
+      next();
+    });
+    slider.on("dragStarted", clear);
+    slider.on("animationEnded", next);
+    slider.on("updated", next);
+    slider.on("destroyed", clear);
+  }
+
+  function init() {
+    const slider_el = document.getElementById("featured-keen-slider");
+    const container = slider_el?.parentElement as HTMLElement | null;
+    if (!slider_el || !container || (container as any)._keenInstance) return;
+
+    const slider = new KeenSlider(
+      slider_el,
+      {
+        loop: true,
+        slides: {
+          origin: "center",
+          perView: 1,
+          spacing: 10,
+        },
+      },
+      [navigation, autoplay],
+    );
+
+    (container as any)._keenInstance = slider;
+  }
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>

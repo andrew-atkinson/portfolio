@@ -2,7 +2,12 @@
 import ImageRow from "@components/ImageRow.astro";
 import { getEntries, getEntry } from "astro:content";
 
-const { seriesName, seriesType = "series", gap = "2" } = Astro.props;
+const {
+  seriesName,
+  seriesType = "series",
+  gap = "2",
+  displayTitle = false,
+} = Astro.props;
 const series = await getEntry(seriesType, seriesName.toLowerCase() as any);
 
 const pieces =
@@ -12,7 +17,7 @@ const title = series.data.title;
 ---
 
 <section class='animate'>
-  <h2 class='mt-1 mb-1.5'>{title}</h2>
+  {displayTitle ? <h2 class='mt-1 mb-1.5'>{title}</h2> : null}
   <div class='flex flex-wrap justify-center bg-slate-500/20'>
     <a href={"/" + seriesType + "/" + seriesName.toLowerCase()}>
       <ImageRow images={pieces} gap={gap} />
