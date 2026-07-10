@@ -31,6 +31,16 @@ const images = defineCollection({
     }),
 });
 
+const videos = defineCollection({
+  schema: z.object({
+    src: z.string(),
+    title: z.string(),
+    alt: z.string(),
+    description: z.string().optional(),
+    date: z.coerce.date().optional(),
+  }),
+});
+
 const pieces = z.object({
   schema: z.object({
     type: z.string(),
@@ -147,4 +157,5 @@ export const collections = {
   images,
   panoramas,
   featured,
+  videos,
 };

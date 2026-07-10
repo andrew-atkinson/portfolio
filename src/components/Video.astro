@@ -1,0 +1,94 @@
+---
+import { getEntries, getEntry, getCollection } from "astro:content";
+
+interface Props {
+  src: string;
+  poster: string;
+  width?: number;
+  height?: number;
+}
+
+const { src, poster, width = 640, height = 360 } = Astro.props;
+
+const posterId: any = await getEntry("images", poster.toLowerCase() as any);
+const posterSrc = posterId?.data?.src?.src ?? "";
+
+// find the url from the src in the video.md file
+const videoSrc = (await getEntry("videos", src))?.data?.src ?? "";
+---
+
+<div
+  class='lazy-video'
+  data-src={src}
+  data-url={videoSrc}
+  style={`aspect-ratio: ${width}/${height};`}
+>
+  <img
+    src={posterSrc}
+    alt='Video thumbnail'
+    loading='lazy'
+    width={width}
+    height={height}
+  />
+  <button class='play-button' aria-label='Play video' disabled={!videoSrc}>
+    <svg viewBox='0 0 24 24' fill='currentColor' width='48' height='48'>
+      <path d='M8 5v14l11-7z'></path>
+    </svg>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll(".lazy-video").forEach((container) => {
+    const button = container.querySelector(".play-button");
+    const img = container.querySelector("img");
+
+    button?.addEventListener("click", () => {
+      const src = container.getAttribute("data-src");
+      const videoUrl = container.getAttribute("data-url");
+
+      if (!src || !videoUrl) return;
+
+      const video = document.createElement("video");
+      video.src = videoUrl;
+      video.controls = true;
+      video.autoplay = true;
+      video.style.width = "100%";
+      video.style.height = "100%";
+
+      container.innerHTML = "";
+      container.appendChild(video);
+    });
+  });
+</script>
+
+<style>
+  .lazy-video {
+    position: relative;
+    background: #000;
+    cursor: pointer;
+  }
+
+  .lazy-video img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    border-radius: 50%;
+    padding: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .play-button:hover {
+    background: rgba(0, 0, 0, 0.9);
+  }
+</style>
