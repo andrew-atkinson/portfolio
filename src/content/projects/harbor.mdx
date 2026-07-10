@@ -1,0 +1,24 @@
+---
+title: "Harbor"
+summary: "A generative sound piece and animation based on the 2020 fecal colliform data in the NYC harbor."
+date: "Mar 15 2022"
+draft: false
+tags:
+  - NYC
+  - Fecal Colliform
+  - OMP
+videos:
+  - harbor-1
+images:
+  - harbor-1
+thumbnail: "harbor-1"
+---
+
+import Video from "../../components/Video.astro";
+
+<Video
+  src={frontmatter.videos[0]}
+  poster={frontmatter.images[0]}
+  width={640}
+  height={360}
+/>
