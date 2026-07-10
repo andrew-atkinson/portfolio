@@ -51,28 +51,50 @@ const estimated_initial_size =
       style={{ minHeight: `${estimated_initial_size}px` }}
     >
       <ul class='flex flex-col gap-3'>
+        <div class='text-xl font-semibold'>Projects</div>
         {
-          items.map((entry) => {
-            let thumbnail = images.filter(
-              (img) => img.slug === entry.data.thumbnail,
-            );
-            return (
-              <li>
-                <ArrowCard
-                  entry={
-                    entry as CollectionEntry<
-                      "projects" | "series" | "panoramas"
-                    >
-                  }
-                  pill={true}
-                  getTagVisibility={() => true}
-                  image={
-                    thumbnail.length > 0 ? thumbnail[0].data.src.src : null
-                  }
-                />
-              </li>
-            );
-          })
+          items
+            .filter((entry) => entry.collection === "projects")
+            .map((entry) => {
+              console.log("entry", entry);
+              let thumbnail = images.filter(
+                (img) => img.slug === entry.data.thumbnail,
+              );
+              return (
+                <li>
+                  <ArrowCard
+                    entry={entry as CollectionEntry<"projects">}
+                    pill={true}
+                    getTagVisibility={() => true}
+                    image={
+                      thumbnail.length > 0 ? thumbnail[0].data.src.src : null
+                    }
+                  />
+                </li>
+              );
+            })
+        }
+        <div class='text-xl font-semibold'>Series</div>
+        {
+          items
+            .filter((entry) => entry.collection === "series")
+            .map((entry) => {
+              let thumbnail = images.filter(
+                (img) => img.slug === entry.data.thumbnail,
+              );
+              return (
+                <li>
+                  <ArrowCard
+                    entry={entry as CollectionEntry<"series">}
+                    pill={true}
+                    getTagVisibility={() => true}
+                    image={
+                      thumbnail.length > 0 ? thumbnail[0].data.src.src : null
+                    }
+                  />
+                </li>
+              );
+            })
         }
       </ul>
     </div>
