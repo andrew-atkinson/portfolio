@@ -11,8 +11,12 @@ const pieces = await getEntries(series.data.pieces);
 ---
 
 <PageLayout title={frontmatter.title} description={frontmatter.description}>
-  <div class="pb-10">
-    <ImageGrid images={pieces} title={frontmatter.title} />
+  <div class='pb-10'>
+    <ImageGrid
+      images={pieces}
+      title={frontmatter.title}
+      rowLength={frontmatter.rowLength || 4}
+    />
     <TextContent content={series} />
   </div>
 </PageLayout>

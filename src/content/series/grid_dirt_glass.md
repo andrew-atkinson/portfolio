@@ -1,6 +1,7 @@
 ---
 title: "Grid Dirt Glass"
 view: "grid"
+rowLength: 3
 pieces:
   - grid_dirt_glass_1
   - grid_dirt_glass_2
