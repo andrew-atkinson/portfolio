@@ -11,7 +11,7 @@
 //      `pieces[]`                        -> src/content/images/ id
 //      `thumbnail`                       -> src/content/images/ id
 //      `project`                         -> a project's `title`
-//  - src/content/projects/*/index.{md,mdx}
+//  - src/content/projects/*.{md,mdx}
 //      `thumbnail`                       -> src/content/images/ id
 //      `series[]`                        -> src/content/series/ id
 //      `panoramas[]`                     -> src/content/panoramas/ id
@@ -47,8 +47,8 @@ function readFrontmatter(file) {
 }
 
 // Reads every entry of a content collection, whether it's stored as flat
-// files (e.g. src/content/images/foo.md) or as directories with an
-// index file (e.g. src/content/projects/Foo/index.mdx).
+// files (e.g. src/content/projects/foo.md) or as directories with an
+// index file (e.g. src/content/some-collection/Foo/index.mdx).
 //
 // `id` is the raw filename/dirname (used by Astro's `reference()`), and
 // `slug` is Astro's slugified version (used for page URLs).
