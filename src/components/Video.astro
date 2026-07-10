@@ -1,17 +1,26 @@
 ---
 import { getEntries, getEntry, getCollection } from "astro:content";
+import type { isLiteralTypeLiteral } from "typescript";
 
 interface Props {
   src: string;
-  poster: string;
+  poster?: string;
   width?: number;
   height?: number;
 }
 
 const { src, poster, width = 640, height = 360 } = Astro.props;
 
-const posterId: any = await getEntry("images", poster.toLowerCase() as any);
-const posterSrc = posterId?.data?.src?.src ?? "";
+let posterId: any;
+let posterSrc: string;
+
+if (poster) {
+  posterId = await getEntry("images", poster.toLowerCase() as any);
+  posterSrc = posterId?.data?.src?.src ?? "";
+} else {
+  posterId = null;
+  posterSrc = "";
+}
 
 // find the url from the src in the video.md file
 const videoSrc = (await getEntry("videos", src))?.data?.src ?? "";
@@ -23,13 +32,17 @@ const videoSrc = (await getEntry("videos", src))?.data?.src ?? "";
   data-url={videoSrc}
   style={`aspect-ratio: ${width}/${height};`}
 >
-  <img
-    src={posterSrc}
-    alt='Video thumbnail'
-    loading='lazy'
-    width={width}
-    height={height}
-  />
+  {
+    posterSrc ? (
+      <img
+        src={posterSrc}
+        alt='Video thumbnail'
+        loading='lazy'
+        width={width}
+        height={height}
+      />
+    ) : null
+  }
   <button class='play-button' aria-label='Play video' disabled={!videoSrc}>
     <svg viewBox='0 0 24 24' fill='currentColor' width='48' height='48'>
       <path d='M8 5v14l11-7z'></path>
