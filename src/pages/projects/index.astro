@@ -56,7 +56,6 @@ const estimated_initial_size =
           items
             .filter((entry) => entry.collection === "projects")
             .map((entry) => {
-              console.log("entry", entry);
               let thumbnail = images.filter(
                 (img) => img.slug === entry.data.thumbnail,
               );
