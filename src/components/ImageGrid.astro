@@ -1,41 +1,51 @@
 ---
 import { Image } from "astro:assets";
 
-const { images, title } = Astro.props;
+const { images, title, rowLength } = Astro.props;
 
-// Pad to 9 cells (3x3) with nulls filling the remainder
-const cells = [...images, ...Array(9 - images.length).fill(null)];
+// Calculate the number of cells needed to fill the grid based on the rowLength and the number of images
+let gridSize = 0;
+if (rowLength) {
+  gridSize = Math.ceil(images.length / rowLength) * rowLength;
+} else {
+  // defaults to 3 rows if rowLength is not provided
+  gridSize = Math.ceil(images.length / 3) * rowLength;
+}
+
+const cells = [...images, ...Array(gridSize - images.length).fill(null)];
 ---
 
-<section class="animate">
-  <div class="relative bg-backlight dark:bg-backdark">
+<section class='animate'>
+  <div class='relative bg-backlight dark:bg-backdark'>
     <!-- Title — mt-14 clears the fixed h-16 header, pb-4 gives breathing room before the grid -->
-    {title && (
-      <div class="mx-auto max-w-screen-lg px-5 pt-14 pb-4 opacity-75 text-lg tracking-wider text-center">
-        {title}
-      </div>
-    )}
-    <div class="mx-auto max-w-screen-lg px-5 pb-5">
-      <div class="grid grid-cols-3 gap-2">
+    {
+      title && (
+        <div class='mx-auto max-w-screen-lg px-5 pt-14 pb-4 opacity-75 text-lg tracking-wider text-center'>
+          {title}
+        </div>
+      )
+    }
+    <div class='mx-auto max-w-screen-lg px-5 pb-5'>
+      <div class=`grid grid-cols-${rowLength} gap-2`>
         {
           cells.map((image: any) =>
             image ? (
               <a
                 href={"/images/" + image.slug}
-                class="block overflow-hidden group"
+                class='block overflow-hidden group'
               >
                 <Image
                   src={image.data.src}
                   alt={image.data.alt}
                   width={400}
                   height={400}
-                  class="w-full h-auto object-contain transition-opacity duration-300 group-hover:opacity-75"
-                  loading="eager"
+                  class='w-full h-auto object-contain transition-opacity duration-300 group-hover:opacity-75'
+                  loading='eager'
                 />
               </a>
             ) : (
               <div />
-            )
+            ),
           )
         }
       </div>

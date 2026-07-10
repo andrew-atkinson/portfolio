@@ -19,3 +19,8 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# planning files
+CONTENT_PLAN.md
+PROGRESS.md
+pnpm-lock.yaml

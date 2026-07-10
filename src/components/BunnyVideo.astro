@@ -1,0 +1,84 @@
+---
+// Video component for clips hosted on Bunny.net, embedded on a Netlify
+// origin (cross-origin by definition).
+//
+// Two modes:
+// - Bunny Stream (recommended): pass `videoId` (+ optional `libraryId`,
+//   falling back to PUBLIC_BUNNY_LIBRARY_ID). Renders Bunny's player
+//   iframe, which works cross-origin with no extra config.
+// - Direct file (Bunny Storage/CDN pull zone): pass `src` to a .mp4/.webm
+//   URL. Renders a native <video> with crossorigin="anonymous" — the Bunny
+//   pull zone must have CORS enabled (Pull Zone > Headers > enable CORS,
+//   or set Access-Control-Allow-Origin to your Netlify domain / "*").
+
+type Props = {
+  videoId?: string;
+  libraryId?: string;
+  src?: string;
+  poster?: any;
+  title?: string;
+  autoplay?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  controls?: boolean;
+  class?: string;
+};
+
+const {
+  videoId,
+  libraryId,
+  src,
+  poster,
+  title = "",
+  autoplay = false,
+  loop = false,
+  muted = true,
+  controls = true,
+  class: className = "",
+} = Astro.props;
+
+const resolvedLibraryId = libraryId ?? import.meta.env.PUBLIC_BUNNY_LIBRARY_ID;
+
+let embedSrc = "";
+if (videoId) {
+  if (!resolvedLibraryId) {
+    throw new Error(
+      "BunnyVideo: a libraryId is required (pass one as a prop or set PUBLIC_BUNNY_LIBRARY_ID).",
+    );
+  }
+  const params = new URLSearchParams({
+    autoplay: String(autoplay),
+    loop: String(loop),
+    muted: String(muted),
+    preload: "true",
+  });
+  embedSrc = `https://iframe.mediadelivery.net/embed/${resolvedLibraryId}/${videoId}?${params.toString()}`;
+}
+---
+
+<div class={`relative w-full aspect-video overflow-hidden bg-black/5 dark:bg-white/5 ${className}`}>
+  {videoId ? (
+    <iframe
+      src={embedSrc}
+      title={title}
+      loading="lazy"
+      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+      allowfullscreen
+      class="absolute inset-0 h-full w-full border-0"
+    />
+  ) : src ? (
+    <video
+      class="absolute inset-0 h-full w-full object-contain"
+      src={src}
+      poster={poster ? poster.src : undefined}
+      title={title}
+      autoplay={autoplay}
+      loop={loop}
+      muted={muted}
+      controls={controls}
+      playsinline
+      crossorigin="anonymous"
+      preload="metadata"
+    />
+  ) : null}
+</div>

@@ -1,0 +1,80 @@
+---
+// Reusable p5.js mount point. Works inside the featured-works carousel and
+// on any other page.
+//
+// `sketch` is a path to a module (relative to the project root, e.g.
+// "/src/sketches/example.ts") whose default export is a function
+// `(p: p5) => void` written in p5 instance mode:
+//
+//   export default (p: p5) => {
+//     p.setup = () => p.createCanvas(p.windowWidth, p.windowHeight)
+//     p.draw = () => { ... }
+//   }
+
+type Props = {
+  sketch: string;
+  id?: string;
+  title?: string;
+  class?: string;
+};
+
+const {
+  sketch,
+  id = `p5-${Math.random().toString(36).slice(2, 9)}`,
+  title,
+  class: className = "",
+} = Astro.props;
+---
+
+<div
+  class={`p5-sketch relative w-full overflow-hidden ${className}`}
+  id={id}
+  data-sketch={sketch}
+  role={title ? "img" : undefined}
+  aria-label={title}
+>
+</div>
+
+<script>
+  import p5 from "p5";
+
+  function mount(el: HTMLElement) {
+    if (el.dataset.mounted === "true") return;
+    const sketchPath = el.dataset.sketch;
+    if (!sketchPath) return;
+
+    el.dataset.mounted = "true";
+
+    import(/* @vite-ignore */ sketchPath)
+      .then((mod) => {
+        const factory = mod.default;
+        if (typeof factory !== "function") {
+          console.error(
+            `P5Sketch: ${sketchPath} has no default export function`,
+          );
+          return;
+        }
+        new p5(factory, el);
+      })
+      .catch((err) => {
+        console.error(`P5Sketch: failed to load ${sketchPath}`, err);
+      });
+  }
+
+  function mountAll() {
+    document
+      .querySelectorAll<HTMLElement>(".p5-sketch[data-sketch]")
+      .forEach(mount);
+  }
+
+  mountAll();
+  document.addEventListener("astro:page-load", mountAll);
+</script>
+
+<style>
+  .p5-sketch canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+</style>
